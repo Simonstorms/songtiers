@@ -4,18 +4,16 @@ import dotenv from 'dotenv';
 
 //For env File
 dotenv.config();
-
+const cors = require("cors")
 const app: Application = express();
 const port = process.env.PORT || 8000;
 
-app.get('/', (req, res) => {
+app.use(cors());
+app.get('/api/home', (req, res) => {
 
-    res.send(`URL is: Home`);
+    res.json({message: "Hello Simon"});
 });
-app.get('/about', (req, res) => {
 
-    res.send(`URL is: About`);
-});
 app.listen(port, () => {
     console.log(`Server is Fire at http://localhost:${port}`);
 });
