@@ -14,28 +14,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const mysql_1 = __importDefault(require("mysql"));
 const cors_1 = __importDefault(require("cors"));
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const pg_1 = require("pg");
 // For env File
 dotenv_1.default.config();
+const client = new pg_1.Client({
+    host: process.env.POSTGRES_HOST,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
+    port: parseInt(process.env.POSTGRES_PORT),
+});
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8000;
-// Configure MySQL connection
-const db = mysql_1.default.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE
-});
-db.connect((error) => {
-    if (error) {
-        console.error('Database connection failed:', error);
-    }
-    else {
-        console.log('MySQL connected successfully.');
-    }
-});
 // Middleware
 app.use((0, cors_1.default)());
 app.use(express_1.default.urlencoded({ extended: false }));
@@ -43,34 +34,36 @@ app.use(express_1.default.json());
 // Register endpoint
 app.post("/auth/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, password_confirm } = req.body;
-    db.query('SELECT email FROM users WHERE email = ?', [email], (error, results) => __awaiter(void 0, void 0, void 0, function* () {
-        if (error) {
-            console.log(error);
-        }
-        if (results.length > 0) {
-            return res.render('register', {
-                message: 'This email is already in use'
-            });
-        }
-        else if (password !== password_confirm) {
-            return res.render('register', {
-                message: 'Passwords do not match!'
-            });
-        }
-        let hashedPassword = yield bcryptjs_1.default.hash(password, 8);
-        db.query('INSERT INTO users SET ?', { name: name, email: email, password: hashedPassword }, (err, results) => {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                return res.render('register', {
-                    message: 'User registered!'
-                });
-            }
-        });
-    }));
+    // db.query('SELECT email FROM useyrs WHERE email = ?', [email], async (error, results) => {
+    //     if (error) {
+    //         console.log(error);
+    //     }
+    //
+    //     if (results.length > 0) {
+    //         return res.render('register', {
+    //             message: 'This email is already in use'
+    //         });
+    //     } else if (password !== password_confirm) {
+    //         return res.render('register', {
+    //             message: 'Passwords do not match!'
+    //         });
+    //     }
+    //
+    //     let hashedPassword = await bcrypt.hash(password, 8);
+    //     db.query('INSERT INTO users SET ?', { name: name, email: email, password: hashedPassword }, (err, results) => {
+    //         if (err) {
+    //             console.log(err);
+    //         } else {
+    //             return res.render('register', {
+    //                 message: 'User registered!'
+    //             });
+    //         }
+    //     });
+    // });
 }));
 // Start the server
-app.listen(port, () => {
+app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
+    yield client.connect();
+    console.log('sdfsdgf');
     console.log(`Server is running at http://localhost:${port}`);
-});
+}));
