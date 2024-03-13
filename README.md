@@ -18,3 +18,5 @@ MVP Goals:
 - Ready-to-send message + image for top 5 contacts
 
 Database: postgres in docker
+Client: Next JS + Typescript + Tailwind + Acernity UI
+Server: Express JS with Typescript
