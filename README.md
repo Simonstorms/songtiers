@@ -16,3 +16,5 @@ MVP Goals:
     - CTA to create own wrapped with Flamingo
 - Ready-to-post GPT generated thank you post to celebrate most messaged contact
 - Ready-to-send message + image for top 5 contacts
+
+Database: postgres in docker
