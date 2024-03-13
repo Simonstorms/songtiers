@@ -20,3 +20,5 @@ MVP Goals:
 Database: postgres in docker
 Client: Next JS + Typescript + Tailwind + Acernity UI
 Server: Express JS with Typescript
+
+lul
