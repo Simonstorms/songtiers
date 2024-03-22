@@ -16,54 +16,44 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const pg_1 = require("pg");
-// For env File
+const multer_1 = __importDefault(require("multer"));
+// Initialize environment variables
 dotenv_1.default.config();
 const client = new pg_1.Client({
     host: process.env.POSTGRES_HOST,
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
-    port: parseInt(process.env.POSTGRES_PORT),
+    port: parseInt(process.env.POSTGRES_PORT || '5432'), // Provide a default port if not specified
 });
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8000;
+const upload = (0, multer_1.default)({ dest: 'uploads/' });
 // Middleware
 app.use((0, cors_1.default)());
-app.use(express_1.default.urlencoded({ extended: false }));
-app.use(express_1.default.json());
-// Register endpoint
-app.post("/auth/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, password, password_confirm } = req.body;
-    // db.query('SELECT email FROM useyrs WHERE email = ?', [email], async (error, results) => {
-    //     if (error) {
-    //         console.log(error);
-    //     }
-    //
-    //     if (results.length > 0) {
-    //         return res.render('register', {
-    //             message: 'This email is already in use'
-    //         });
-    //     } else if (password !== password_confirm) {
-    //         return res.render('register', {
-    //             message: 'Passwords do not match!'
-    //         });
-    //     }
-    //
-    //     let hashedPassword = await bcrypt.hash(password, 8);
-    //     db.query('INSERT INTO users SET ?', { name: name, email: email, password: hashedPassword }, (err, results) => {
-    //         if (err) {
-    //             console.log(err);
-    //         } else {
-    //             return res.render('register', {
-    //                 message: 'User registered!'
-    //             });
-    //         }
-    //     });
-    // });
-}));
+app.post('/upload', upload.single('file'), (req, res) => {
+    if (req.file) {
+        console.log('File received:', req.file);
+        res.status(200).send('File uploaded successfully');
+    }
+    else {
+        res.status(400).send('No file uploaded');
+    }
+});
 // Start the server
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
-    yield client.connect();
-    console.log('sdfsdgf');
-    console.log(`Server is running at http://localhost:${port}`);
+    try {
+        yield client.connect();
+        console.log('Connected to the database successfully.');
+        // Example query
+        const result = yield client.query("SELECT * FROM test");
+        if (result.rows.length > 0) {
+            console.log(result.rows[0].message);
+        }
+        console.log(`Server is running at http://localhost:${port}`);
+    }
+    catch (err) {
+        console.error('Database connection failed', err);
+        process.exit(1); // Exit the process if the database connection fails
+    }
 }));

@@ -1,22 +1,27 @@
-import { writeFile } from 'fs/promises'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
-    const data = await request.formData()
-    const file: File | null = data.get('file') as unknown as File
+    const data = await request.formData();
+    const file = data.get('file');
 
-    if (!file) {
-        return NextResponse.json({ success: false })
+    if (!file || typeof file === 'string') {
+        return NextResponse.json({ success: false, message: 'No file uploaded' });
     }
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
+    // Create a FormData object and append the file
+    const formData = new FormData();
+    formData.append('file', file);
 
-    // With the file data in the buffer, you can do whatever you want with it.
-    // For this, we'll just write it to the filesystem in a new location
-    const path = `/tmp/${file.name}`
-    await writeFile(path, buffer)
-    console.log(`open ${path} to see the uploaded file`)
+    const response = await fetch('http://localhost:8000/upload', {
+        method: 'POST',
+        body: formData, // Send as FormData
+    });
 
-    return NextResponse.json({ success: true })
+    if (response.ok) {
+        console.log('File uploaded successfully');
+        return NextResponse.json({ success: true });
+    } else {
+        console.error('Upload failed');
+        return NextResponse.json({ success: false, message: 'Upload failed' });
+    }
 }
