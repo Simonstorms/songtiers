@@ -60,6 +60,7 @@ app.listen(port, async () => {
     try {
         await client.connect();
         console.log('Connected to the database successfully.');
+        
 
         // Example query
         const result = await client.query("SELECT * FROM test");
