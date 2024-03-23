@@ -26,10 +26,34 @@ app.post('/upload', upload.single('file'), (req: Request, res: Response) => {
     if (req.file) {
         console.log('File received:', req.file);
         res.status(200).send('File uploaded successfully');
+        yauzl.open(req.file, {lazyEntries: true}, function(err, zipfile) {
+            if (err) throw err;
+            zipfile.readEntry();
+            zipfile.on("entry", function(entry) {
+                if (/\/$/.test(entry.fileName)) {
+                    // Directory file names end with '/'.
+                    // Note that entries for directories themselves are optional.
+                    // An entry's fileName implicitly requires its parent directories to exist.
+                    zipfile.readEntry();
+                } else {
+                    // file entry
+                    zipfile.openReadStream(entry, function(err, readStream) {
+                        if (err) throw err;
+                        readStream.on("end", function() {
+                            zipfile.readEntry();
+                        });
+                        readStream.pipe(somewhere);
+                    });
+                }
+            });
+        });
+
     } else {
         res.status(400).send('No file uploaded');
     }
 });
+var yauzl = require("yauzl");
+
 
 // Start the server
 app.listen(port, async () => {
