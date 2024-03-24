@@ -21,30 +21,50 @@ const upload = multer({ dest: 'uploads/' });
 
 // Middleware
 app.use(cors());
+var yauzl = require("yauzl");
+
 
 app.post('/upload', upload.single('file'), (req: Request, res: Response) => {
     if (req.file) {
         console.log('File received:', req.file);
         res.status(200).send('File uploaded successfully');
-        yauzl.open(req.file, {lazyEntries: true}, function(err, zipfile) {
-            if (err) throw err;
-            zipfile.readEntry();
-            zipfile.on("entry", function(entry) {
+
+        yauzl.open(req.file.path, { lazyEntries: true }, (err, zipfile) => {
+            if (err) {
+                console.error('Error opening zip file:', err);
+                res.status(500).send('Error processing the file');
+                return;
+            }
+
+            zipfile.on('entry', (entry) => {
                 if (/\/$/.test(entry.fileName)) {
-                    // Directory file names end with '/'.
-                    // Note that entries for directories themselves are optional.
-                    // An entry's fileName implicitly requires its parent directories to exist.
                     zipfile.readEntry();
                 } else {
-                    // file entry
-                    zipfile.openReadStream(entry, function(err, readStream) {
-                        if (err) throw err;
-                        readStream.on("end", function() {
-                            zipfile.readEntry();
-                        });
-                        readStream.pipe(somewhere);
+                    zipfile.openReadStream(entry, (err, readStream) => {
+                        if (err) {
+                            console.error('Error reading zip entry stream:', err);
+                            return;
+                        }
+
+                        if (readStream) {
+                            readStream.on("end", () => {
+                                zipfile.readEntry();
+                            });
+
+                            // Replace 'somewhere' with actual logic to handle the stream
+                            // For example, saving the file or processing its contents
+                            // readStream.pipe(somewhere);
+
+                            // For demonstration, just log the file name
+                            console.log(`Extracting file: ${entry.fileName}`);
+                            readStream.resume(); // Consume the stream data
+                        }
                     });
                 }
+            });
+
+            zipfile.on('end', () => {
+                console.log('Finished extracting all entries');
             });
         });
 
@@ -52,7 +72,8 @@ app.post('/upload', upload.single('file'), (req: Request, res: Response) => {
         res.status(400).send('No file uploaded');
     }
 });
-var yauzl = require("yauzl");
+
+
 
 
 // Start the server
