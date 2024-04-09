@@ -1,8 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import { Client } from 'pg';
-import multer from 'multer';
 
 // Initialize environment variables
 dotenv.config();
@@ -17,81 +15,31 @@ const client = new Client({
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
-const upload = multer({ dest: 'uploads/' });
+const cors = require("cors");
 
-// Middleware
-app.use(cors());
-var yauzl = require("yauzl");
+var corsOptions = {
+    origin: "http://localhost:8081"
+};
 
+app.use(cors(corsOptions));
 
-app.post('/upload', upload.single('file'), (req: Request, res: Response) => {
-    if (req.file) {
-        console.log('File received:', req.file);
-        res.status(200).send('File uploaded successfully');
+// parse requests of content-type - application/json
+app.use(express.json());
 
-        yauzl.open(req.file.path, { lazyEntries: true }, (err, zipfile) => {
-            if (err) {
-                console.error('Error opening zip file:', err);
-                res.status(500).send('Error processing the file');
-                return;
-            }
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 
-            zipfile.on('entry', (entry) => {
-                if (/\/$/.test(entry.fileName)) {
-                    zipfile.readEntry();
-                } else {
-                    zipfile.openReadStream(entry, (err, readStream) => {
-                        if (err) {
-                            console.error('Error reading zip entry stream:', err);
-                            return;
-                        }
+// simple route
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to Simons application." });
+});
 
-                        if (readStream) {
-                            readStream.on("end", () => {
-                                zipfile.readEntry();
-                            });
-
-                            // Replace 'somewhere' with actual logic to handle the stream
-                            // For example, saving the file or processing its contents
-                            // readStream.pipe(somewhere);
-
-                            // For demonstration, just log the file name
-                            console.log(`Extracting file: ${entry.fileName}`);
-                            readStream.resume(); // Consume the stream data
-                        }
-                    });
-                }
-            });
-
-            zipfile.on('end', () => {
-                console.log('Finished extracting all entries');
-            });
-        });
-
-    } else {
-        res.status(400).send('No file uploaded');
-    }
+// set port, listen for requests
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}.`);
 });
 
 
 
 
-// Start the server
-app.listen(port, async () => {
-    try {
-        await client.connect();
-        console.log('Connected to the database successfully.');
-        
 
-        // Example query
-        const result = await client.query("SELECT * FROM test");
-        if (result.rows.length > 0) {
-            console.log(result.rows[0].message);
-        }
-
-        console.log(`Server is running at http://localhost:${port}`);
-    } catch (err) {
-        console.error('Database connection failed', err);
-        process.exit(1); // Exit the process if the database connection fails
-    }
-});
