@@ -1,28 +1,27 @@
-import { AppDataSource } from "./data-source";
-import * as express from "express";
-import * as dotenv from "dotenv";
-import { Request, Response } from "express";
-import { userRouter } from "./routes/user.routes";
-import { movieRouter } from "./routes/movie.routes";
 import "reflect-metadata";
-dotenv.config();
+import { createConnection } from "typeorm";
+import express from "express";
+import bodyParser from "body-parser";
+import helmet from "helmet";
+import cors from "cors";
+import routes from "./routes";
 
-const app = express();
-app.use(express.json());
-app.use(errorHandler);
-const PORT = process.env.PORT || 8000;
-app.use("/auth", userRouter);
-app.use("/api", movieRouter);
+//Connects to the Database -> then starts the express
+createConnection()
+    .then(async connection => {
+        // Create a new express application instance
+        const app = express();
 
-app.get("*", (req: Request, res: Response) => {
-    res.status(505).json({ message: "Bad Request" });
-});
+        // Call midlewares
+        app.use(cors());
+        app.use(helmet());
+        app.use(bodyParser.json());
 
-AppDataSource.initialize()
-    .then(async () => {
-        app.listen(PORT, () => {
-            console.log("Server is running on http://localhost:" + PORT);
+        //Set all routes from routes folder
+        app.use("/", routes);
+
+        app.listen(3000, () => {
+            console.log("Server started on port 3000!");
         });
-        console.log("Data Source has been initialized!");
     })
-    .catch((error) => console.log(error));
+    .catch(error => console.log(error));
