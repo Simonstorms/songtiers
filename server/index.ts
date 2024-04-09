@@ -1,45 +1,28 @@
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
-import { Client } from 'pg';
-
-// Initialize environment variables
+import { AppDataSource } from "./data-source";
+import * as express from "express";
+import * as dotenv from "dotenv";
+import { Request, Response } from "express";
+import { userRouter } from "./routes/user.routes";
+import { movieRouter } from "./routes/movie.routes";
+import "reflect-metadata";
 dotenv.config();
 
-const client = new Client({
-    host: process.env.POSTGRES_HOST,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB,
-    port: parseInt(process.env.POSTGRES_PORT || '5432'), // Provide a default port if not specified
-});
-
-const app: Express = express();
-const port = process.env.PORT || 8000;
-const cors = require("cors");
-
-var corsOptions = {
-    origin: "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
-
-// parse requests of content-type - application/json
+const app = express();
 app.use(express.json());
+app.use(errorHandler);
+const PORT = process.env.PORT || 8000;
+app.use("/auth", userRouter);
+app.use("/api", movieRouter);
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
-
-// simple route
-app.get("/", (req, res) => {
-    res.json({ message: "Welcome to Simons application." });
+app.get("*", (req: Request, res: Response) => {
+    res.status(505).json({ message: "Bad Request" });
 });
 
-// set port, listen for requests
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}.`);
-});
-
-
-
-
-
+AppDataSource.initialize()
+    .then(async () => {
+        app.listen(PORT, () => {
+            console.log("Server is running on http://localhost:" + PORT);
+        });
+        console.log("Data Source has been initialized!");
+    })
+    .catch((error) => console.log(error));
