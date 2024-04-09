@@ -4,7 +4,10 @@ import { getRepository } from "typeorm";
 import { validate } from "class-validator";
 
 import { User } from "../entity/User";
-import config from "../config/config";
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const config = process.env.JWT_SECRET!;
 
 class AuthController {
     static login = async (req: Request, res: Response) => {
@@ -21,6 +24,8 @@ class AuthController {
             user = await userRepository.findOneOrFail({ where: { username } });
         } catch (error) {
             res.status(401).send();
+            return; // Add this line
+
         }
 
         //Check if encrypted password match
@@ -32,7 +37,7 @@ class AuthController {
         //Sing JWT, valid for 1 hour
         const token = jwt.sign(
             { userId: user.id, username: user.username },
-            config.jwtSecret,
+            config,
             { expiresIn: "1h" }
         );
 
@@ -57,6 +62,8 @@ class AuthController {
             user = await userRepository.findOneOrFail(id);
         } catch (id) {
             res.status(401).send();
+            return; // Add this line
+
         }
 
         //Check if old password matchs

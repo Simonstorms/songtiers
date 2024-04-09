@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+dotenv.config();
 
-
-const config = process.env.JWT_SECRET
+const config = process.env.JWT_SECRET!;
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     //Get the jwt token from the head
     const token = <string>req.headers["auth"];
