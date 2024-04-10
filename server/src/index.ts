@@ -1,27 +1,45 @@
 import "reflect-metadata";
-import { createConnection } from "typeorm";
-import express from "express";
-import bodyParser from "body-parser";
-import helmet from "helmet";
-import cors from "cors";
-import routes from "./routes";
+import express, {Request,Response} from "express";
+import datasource from "./config/database";
+import {User} from "./entity/User";
 
 //Connects to the Database -> then starts the express
-createConnection()
-    .then(async connection => {
-        // Create a new express application instance
-        const app = express();
+datasource.initialize().then(() =>{
+    console.log("Database connected");
+}).catch((err)=>{
+    console.log(err);
+});
 
-        // Call midlewares
-        app.use(cors());
-        app.use(helmet());
-        app.use(bodyParser.json());
+const port = process.env.PORT || 8000;
 
-        //Set all routes from routes folder
-        app.use("/", routes);
+const app = express();
 
-        app.listen(3000, () => {
-            console.log("Server started on port 3000!");
-        });
-    })
-    .catch(error => console.log(error));
+app.get("/", (req: Request, res: Response) => {
+    res.json({test: "test"});
+})
+
+app.get("/user", (req: Request, res: Response) => {
+    res.json({test: "user"});
+    console.log(req);
+    console.log(res);
+})
+
+app.post("/user", async function (req: Request, res: Response) {
+
+    console.log("test")
+    const user = await datasource
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values([
+            { username: "Timber", email: "timber@example.com", password: "password1" },
+            { username: "Phantom", email: "phantom@example.com", password: "password2" },
+        ])
+        .execute();
+    console.log(res);
+    return res.send('User created');
+});
+app.listen(port, () => {
+
+    console.log(`Server started on port ${port}`);
+})
