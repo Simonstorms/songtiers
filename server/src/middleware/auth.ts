@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+export async function  auth(req: Request, res: Response, next: NextFunction) {
     try {
         const token = req.cookies.token;
         if (!token) throw new Error("Unauthenticated");
