@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm";
-import * as dotenv from "dotenv";
 import {User} from "../entity/User";
+import dotenv from "dotenv";
+
 dotenv.config();
 
 const datasource =  new DataSource( {
