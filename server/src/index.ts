@@ -2,6 +2,8 @@ import "reflect-metadata";
 import express, {Request,Response} from "express";
 import datasource from "./config/database";
 import {User} from "./entity/User";
+import cors from "cors";
+import auth from "./routes/auth";
 
 interface SigninFormData {
     firstname: string;
@@ -19,7 +21,11 @@ datasource.initialize().then(() =>{
 const port = process.env.PORT || 8000;
 
 const app = express();
+
+//middleware
 app.use(express.json());
+app.use(cors())
+app.use(auth)
 
 app.get("/", (req: Request, res: Response) => {
     res.json({test: "test"});
@@ -30,9 +36,20 @@ app.get("/user", (req: Request, res: Response) => {
     console.log(req);
     console.log(res);
 })
-app.post('/api/signin', (req: Request, res: Response) => {
+app.post('/api/signup', async (req: Request, res: Response) => {
+
     // Type the request body as SigninFormData
+    console.log(req.body)
     const data: SigninFormData = req.body;
+
+    const user = await datasource
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values([
+            { username: data.firstname, email: data.email, password: data.password },
+        ])
+        .execute();
 
     // Now you can access the form data with type safety
     console.log('First Name:', data.firstname);
@@ -41,7 +58,7 @@ app.post('/api/signin', (req: Request, res: Response) => {
     console.log('Password:', data.password);
 
     // Respond to the request
-    res.json({ message: 'Sign in successful', data });
+    res.json({ message: 'Sign up successful', data });
 });
 app.post("/user", async function (req: Request, res: Response) {
 
