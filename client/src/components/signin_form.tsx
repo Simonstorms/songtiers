@@ -20,8 +20,9 @@ export function SigninForm() {
     const  handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Form submitted", formData);
+        console.log(`${apiUrl}/api/signin`)
         try {
-            const response = await fetch(`${apiUrl}/api/signin`, {  // Assuming your Express route is '/api/signin'
+            const response = await fetch(`${apiUrl}/api/signup`, {  // Assuming your Express route is '/api/signin'
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
