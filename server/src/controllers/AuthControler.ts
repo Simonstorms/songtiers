@@ -1,89 +1,52 @@
-import { Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
-import { getRepository } from "typeorm";
-import { validate } from "class-validator";
-
-import { User } from "../entity/User";
+import {Request, Response} from "express";
+import {User} from "../entity/User";
 import * as dotenv from "dotenv";
-dotenv.config();
+import datasource from "../config/database";
+import bcrypt from 'bcryptjs'
 
+dotenv.config();
 const config = process.env.JWT_SECRET!;
 
-class AuthController {
-    static login = async (req: Request, res: Response) => {
-        //Check if username and password are set
-        let { username, password } = req.body;
-        if (!(username && password)) {
-            res.status(400).send();
-        }
-
-        //Get user from database
-        const userRepository = getRepository(User);
-        let user: User;
-        try {
-            user = await userRepository.findOneOrFail({ where: { username } });
-        } catch (error) {
-            res.status(401).send();
-            return; // Add this line
-
-        }
-
-        //Check if encrypted password match
-        if (!user.checkIfUnencryptedPasswordIsValid(password)) {
-            res.status(401).send();
-            return;
-        }
-
-        //Sing JWT, valid for 1 hour
-        const token = jwt.sign(
-            { userId: user.id, username: user.username },
-            config,
-            { expiresIn: "1h" }
-        );
-
-        //Send the jwt in the response
-        res.send(token);
-    };
-
-    static changePassword = async (req: Request, res: Response) => {
-        //Get ID from JWT
-        const id = res.locals.jwtPayload.userId;
-
-        //Get parameters from the body
-        const { oldPassword, newPassword } = req.body;
-        if (!(oldPassword && newPassword)) {
-            res.status(400).send();
-        }
-
-        //Get user from the database
-        const userRepository = getRepository(User);
-        let user: User;
-        try {
-            user = await userRepository.findOneOrFail(id);
-        } catch (id) {
-            res.status(401).send();
-            return; // Add this line
-
-        }
-
-        //Check if old password matchs
-        if (!user.checkIfUnencryptedPasswordIsValid(oldPassword)) {
-            res.status(401).send();
-            return;
-        }
-
-        //Validate de model (password lenght)
-        user.password = newPassword;
-        const errors = await validate(user);
-        if (errors.length > 0) {
-            res.status(400).send(errors);
-            return;
-        }
-        //Hash the new password and save
-        user.hashPassword();
-        userRepository.save(user);
-
-        res.status(204).send();
-    };
+interface SigninFormData {
+    username: string;
+    email: string;
+    password: string;
 }
+function hashPassword(password: string): string {
+    return bcrypt.hashSync(password, 9);
+}
+
+class AuthController {
+    static signup = async (req: Request, res: Response) => {
+        const data: SigninFormData = req.body;
+
+        // Check if the username or email already exists in the database
+        const existingUser = await datasource.getRepository(User)
+            .createQueryBuilder("user")
+            .where("user.username = :username OR user.email = :email", { username: data.username, email: data.email })
+            .getOne();
+
+        if (existingUser) {
+            res.status(400).send({ message: "Username or email already exists" });
+            return;
+        }
+
+        // If username and email are unique, proceed with creating the new user
+        let hash: string = hashPassword(data.password);
+        const user = await datasource
+            .createQueryBuilder()
+            .insert()
+            .into(User)
+            .values([
+                { username: data.username, email: data.email, password: hash },
+            ])
+            .execute();
+
+        res.status(201).send({ message: "User created successfully", user: { id: user.identifiers[0].id, username: data.username, email: data.email }});
+    };
+    static signin = async (req:Request,res:Response) =>{
+
+    }
+};
+
 export default AuthController;
