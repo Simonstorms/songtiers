@@ -23,6 +23,7 @@ export function SignupForm() {
         try {
             const response = await fetch(`${apiUrl}/auth/signup`, {  // Assuming your Express route is '/api/signup'
                 method: 'POST',
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
                 },

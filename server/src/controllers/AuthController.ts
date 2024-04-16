@@ -14,8 +14,9 @@ interface FormData {
     password: string;
 }
 function hashPassword(password: string): string {
-    return bcrypt.hashSync(password, 9);
     console.log('test')
+    return bcrypt.hashSync(password, 9);
+
 }
 
 class AuthController {
@@ -33,6 +34,8 @@ class AuthController {
             return;
         }
 
+
+
         // If username and email are unique, proceed with creating the new user
         let hash: string = hashPassword(data.password);
         const user = await datasource
@@ -49,10 +52,16 @@ class AuthController {
             { userId:user.identifiers[0].id, username: data.username },secret ,
             { expiresIn: "1d" }
         );
-        res.cookie('jwt_cookie', token, { maxAge: 24 * 60 * 60 * 1000 });
+
+
+
+
         // send the jwt in the response
         res.send({ message: "User created successfully", user: { id: user.identifiers[0].id, username: data.username, email: data.email }});
+
+
     };
+
     static signin = async (req:Request,res:Response) =>{
         const { username, password } = req.body;
 
@@ -78,7 +87,8 @@ class AuthController {
             secret,
             { expiresIn: "1h" }
         );
-
+        res.cookie('jwt_cookie', token, { maxAge: 24 * 60 * 60  });
+        console.log('erstellt')
         // Send the JWT to the user
         res.send({ token });
     }
