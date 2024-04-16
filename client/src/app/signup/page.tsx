@@ -1,4 +1,4 @@
-import {SignupForm} from "@/components/signup_form";
+import {SignupForm} from "@/components/authentification/signup_form";
 import React from "react";
 
 export default function Home(){
