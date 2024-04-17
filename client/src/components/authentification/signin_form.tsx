@@ -22,6 +22,8 @@ export function SigninForm() {
         e.preventDefault();
         console.log("Form submitted", formData);
 
+        //save jwt here somewhere
+
         try {
             const response = await fetch(`${apiUrl}/auth/signin`, {
                 method: 'POST',

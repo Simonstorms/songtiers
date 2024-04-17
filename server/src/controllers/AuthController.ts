@@ -88,7 +88,6 @@ class AuthController {
             { expiresIn: "1h" }
         );
         res.cookie('jwt_cookie', token, { maxAge: 24 * 60 * 60  });
-        console.log('erstellt')
         // Send the JWT to the user
         res.send({ token });
     }
