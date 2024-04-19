@@ -12,12 +12,12 @@ export const FetchUser = ({ children }: FetchUserProps) => {
     useEffect(() => {
         (async () => {
             // Check if the current path is the home page
-            if (pathname === "/" || "/signin" || "signup") {
-                return;
-            }
+            // if (pathname === "/" || "/signin" || "signup") {
+            //     return;
+            // }
 
             // Try to get a jwt
-            let jwt = localStorage.getItem("jwt");
+            let jwt = localStorage.getItem("token");
 
             if (!jwt) {
                 router.push("/signup"); // Redirect if no JWT is found
@@ -26,26 +26,27 @@ export const FetchUser = ({ children }: FetchUserProps) => {
 
             // fetch user with fetch("/getUser") returns user based on id stored in the jwt
 
-            // try {
-            //     const res = await fetch(`${apiUrl}/middleware`, {
-            //         headers: {
-            //             Authorization: "Bearer " + jwt,
-            //         },
-            //         method: "GET",
-            //     });
-            //
-            //     const user = await res.json();
-            //     // Redirect based on the user's status
-            //     if (user) {
-            //         router.push(`/user/${user}`);
-            //         // Save user in local storage
-            //         localStorage.setItem("user", user);
-            //     } else {
-            //         router.push("/login");
-            //     }
-            // } catch (error) {
-            //     router.push("/login");
-            // }
+            try {
+                const res = await fetch(`${apiUrl}/auth/getuser`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer " + jwt,
+                    },
+                });
+
+                const user = await res.json();
+                // Redirect based on the user's status
+                console.log(user.userId);
+                if (user.userId) {
+                    router.push(`/user/${user.userId}`);
+                    // Save user in local storage
+                    localStorage.setItem("user", user.userId);
+                } else {
+                    router.push("/signup");
+                }
+            } catch (error) {
+                router.push("/signup");
+            }
         })();
     }, [router]); // Include dependencies in the useEffect hook
 
