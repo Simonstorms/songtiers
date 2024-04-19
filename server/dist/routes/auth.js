@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const AuthController_1 = __importDefault(require("../controllers/AuthController"));
-const checkJwt_1 = require("../middlewares/auth");
+const checkJwt_1 = require("../middlewares/checkJwt");
 const router = (0, express_1.Router)();
 //Login route
 router.post("/login", AuthController_1.default.login);

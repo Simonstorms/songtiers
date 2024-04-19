@@ -14,6 +14,10 @@ interface FormData {
     email: string;
     password: string;
 }
+interface JwtPayload {
+    userId: number;
+    firstname: string;
+}
 function hashPassword(password: string): string {
     console.log('test')
     return bcrypt.hashSync(password, 9);
@@ -88,11 +92,21 @@ class AuthController {
             secret,
             { expiresIn: "1d" }
         );
-        res.cookie('jwt_cookie', token, { maxAge: 24 * 60 * 60 * 1000 });
+
         // Send the JWT to the user
         res.send({token: token });
     }
+    static getuser = async (req:Request,res:Response)=>{
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1]; // Bearer Token
 
+        if (token == null) return res.sendStatus(401); // If no token, unauthorized
+
+        jwt.verify(token, secret, (err:any, decoded: JwtPayload | undefined) => {
+            if (err) return res.sendStatus(403); // Invalid token
+            res.send({userId:decoded?.userId}); // Add userId to request body for further use
+        });
+    }
 
 
 };
