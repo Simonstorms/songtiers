@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 const secret:string = process.env.JWT_SECRET!;
 
-export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
+export const auth = (req: Request, res: Response, next: NextFunction) => {
     // get the jwt token from the head
     const token = <string>req.headers["auth"];
     let jwtPayload;

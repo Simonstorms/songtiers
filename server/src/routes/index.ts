@@ -3,7 +3,7 @@ import {Router} from "express";
 
 const routes = Router();
 
-routes.use('/checkJWT',auth);
+routes.use('/auth',auth);
 // routes.use('/action',action);
 
 export default routes
