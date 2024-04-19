@@ -9,7 +9,8 @@ dotenv.config();
 const secret:string = process.env.JWT_SECRET!;
 
 interface FormData {
-    username: string;
+    firstname:string;
+    lastname:string
     email: string;
     password: string;
 }
@@ -26,7 +27,7 @@ class AuthController {
         // Check if the username or email already exists in the database
         const existingUser = await datasource.getRepository(User)
             .createQueryBuilder("user")
-            .where("user.username = :username OR user.email = :email", { username: data.username, email: data.email })
+            .where("user.email = :email", {email: data.email })
             .getOne();
 
         if (existingUser) {
@@ -43,13 +44,13 @@ class AuthController {
             .insert()
             .into(User)
             .values([
-                { username: data.username, email: data.email, password: hash },
+                { firstname: data.firstname, lastname:data.lastname, email: data.email, password: hash },
             ])
             .execute();
 
         // sign jwt, valid for 1 hour
         const token = jwt.sign(
-            { userId:user.identifiers[0].id, username: data.username },secret ,
+            { userId:user.identifiers[0].id, firstname: data.firstname },secret ,
             { expiresIn: "1d" }
         );
 
@@ -63,12 +64,12 @@ class AuthController {
     };
 
     static signin = async (req:Request,res:Response) =>{
-        const { username, password } = req.body;
+        const { email, password } = req.body;
 
         // Attempt to retrieve the user by username or email
         const user = await datasource.getRepository(User)
             .createQueryBuilder("user")
-            .where("user.username = :username OR user.email = :username", { username })
+            .where("user.email = :email", { email })
             .getOne();
 
         if (!user) {
@@ -83,13 +84,13 @@ class AuthController {
 
         // If valid, sign the JWT
         const token = jwt.sign(
-            { userId: user.id, username: user.username },
+            { userId: user.id, firstname: user.firstname },
             secret,
-            { expiresIn: "1h" }
+            { expiresIn: "1d" }
         );
-        res.cookie('jwt_cookie', token, { maxAge: 24 * 60 * 60  });
+        res.cookie('jwt_cookie', token, { maxAge: 24 * 60 * 60 * 1000 });
         // Send the JWT to the user
-        res.send({ token });
+        res.send({token: token });
     }
 
 

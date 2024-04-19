@@ -7,6 +7,6 @@ const express_1 = require("express");
 const auth_1 = __importDefault(require("./auth"));
 const user_1 = __importDefault(require("./user"));
 const routes = (0, express_1.Router)();
-routes.use("/auth", auth_1.default);
+routes.use("/checkJWT", auth_1.default);
 routes.use("/user", user_1.default);
 exports.default = routes;

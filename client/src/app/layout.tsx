@@ -3,9 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ReactNode } from "react";
-import { cookies } from "next/headers";
-import { FetchUser } from "@/components/authentification/FetchUser";
-const inter = Inter({ subsets: ["latin"] });
+
+import { FetchUser } from "@/app/FetchUser";
 
 export const metadata: Metadata = {
     title: "Linkal - Analyse your LinkedIn chats",

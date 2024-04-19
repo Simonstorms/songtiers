@@ -1,113 +1,145 @@
 "use client";
-import React, { useState } from "react";
-import { cn } from "@/utils/cn";
 
-import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { router } from "next/client";
-import { useRouter } from "next/navigation";
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-// Use apiUrl for fetching data from your Express backend
+import { useSignupForm } from "@/app/signup/useSignupForm";
 
+// Updating the schema to include first and last name fields
+const formSchema = z
+    .object({
+        firstName: z.string().min(1, { message: "First name is required." }),
+        lastName: z.string().min(1, { message: "Last name is required." }),
+        email: z.string().email({ message: "Invalid email address." }),
+        password: z
+            .string()
+            .min(8, { message: "Password must be at least 8 characters." }),
+        confirmPassword: z.string(),
+    })
+    .refine(
+        (data) => {
+            return data.password === data.confirmPassword;
+        },
+        {
+            message: "Passwords do not match",
+            path: ["passwordConfirm"],
+        },
+    );
 export function SignupForm() {
-    const [formData, setFormData] = useState({
-        username: "",
-        email: "",
-        password: "",
+    const { handleSubmit: handleSignup } = useSignupForm();
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        },
     });
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.id]: e.target.value });
-    };
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        const router = useRouter();
-        e.preventDefault();
-        console.log("Form submitted", formData);
-        //save jwt here somewhere
 
-        try {
-            const response = await fetch(`${apiUrl}/auth/signup`, {
-                // Assuming your Express route is '/api/signup'
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
-            const token = await response.json();
-
-            localStorage.setItem("jwt", token);
-            console.log("Response data:", token);
-            let user = "simon";
-            router.push(`/${user}`);
-            // Handle response data, e.g., show a success message, redirect, etc.
-        } catch (error) {
-            console.error("Error submitting form:", error);
-            // Handle errors, e.g., show an error message
-        }
-    };
     return (
-        <div className="mx-auto w-full max-w-md rounded-none bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8">
-            <h2 className="text-4xl font-bold text-neutral-800 dark:text-neutral-200">
-                Signup in to Linkal
-            </h2>
-            <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-                Sign up if you can 3^^
-            </p>
-
-            <form className="my-8" onSubmit={handleSubmit}>
-                <div className="mb-4 flex flex-col space-y-2 md:space-y-0 md:space-x-2 md:flex-row">
-                    <LabelInputContainer>
-                        <Label htmlFor="username">Username</Label>
-                        <Input
-                            id="username"
-                            placeholder="Durden"
-                            type="text"
-                            onChange={handleChange}
-                        />
-                    </LabelInputContainer>
+        <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit((data) => handleSignup(data))}
+                className="space-y-8"
+            >
+                <div className="flex space-x-4">
+                    {" "}
+                    {/* Flex container for inline fields */}
+                    <FormField
+                        control={form.control}
+                        name="firstName"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormLabel>First Name</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="First name"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="lastName"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormLabel>Last Name</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Last name" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                 </div>
-                <LabelInputContainer className="mb-4">
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input
-                        id="email"
-                        placeholder="test@code.berlin"
-                        type="email"
-                        onChange={handleChange}
-                    />
-                </LabelInputContainer>
-                <LabelInputContainer className="mb-4">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                        id="password"
-                        placeholder="••••••••"
-                        type="password"
-                        onChange={handleChange}
-                    />
-                </LabelInputContainer>
-
-                <button
-                    className="bg-gradient-to-br relative  group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-                    type="submit"
-                >
-                    Sign up &rarr;
-                </button>
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="email@example.com"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="******"
+                                    {...field}
+                                    type="password"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Confirm Password</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="******"
+                                    {...field}
+                                    type="password"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <Button type="submit">Sign Up</Button>
             </form>
-        </div>
+        </Form>
     );
 }
-
-const LabelInputContainer = ({
-    children,
-    className,
-}: {
-    children: React.ReactNode;
-    className?: string;
-}) => {
-    return (
-        <div className={cn("flex flex-col space-y-2 w-full", className)}>
-            {children}
-        </div>
-    );
-};
