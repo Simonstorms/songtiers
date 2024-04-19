@@ -4,6 +4,8 @@ import { cn } from "@/utils/cn";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { router } from "next/client";
+import { useRouter } from "next/navigation";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 // Use apiUrl for fetching data from your Express backend
 
@@ -17,6 +19,7 @@ export function SignupForm() {
         setFormData({ ...formData, [e.target.id]: e.target.value });
     };
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        const router = useRouter();
         e.preventDefault();
         console.log("Form submitted", formData);
         //save jwt here somewhere
@@ -32,8 +35,12 @@ export function SignupForm() {
                 body: JSON.stringify(formData),
             });
 
-            const data = await response.json();
-            console.log("Response data:", data);
+            const token = await response.json();
+
+            localStorage.setItem("jwt", token);
+            console.log("Response data:", token);
+            let user = "simon";
+            router.push(`/${user}`);
             // Handle response data, e.g., show a success message, redirect, etc.
         } catch (error) {
             console.error("Error submitting form:", error);

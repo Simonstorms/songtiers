@@ -1,6 +1,6 @@
-import express, {Request,Response} from "express";
+import express from "express";
 import datasource from "./config/database";
-import {User} from "./entity/User";
+
 import cors from "cors";
 import helmet from "helmet";
 import routes from "./routes";
@@ -22,12 +22,10 @@ datasource.initialize().then(() =>{
 
 //middleware
 app.use(express.json());
-app.use(cors(
-    {
-        origin: ['http://127.0.0.1:3000'],
-        credentials: true
-    }
-))
+app.use(cors({
+    origin: 'http://localhost:3000', // replace with the domain of your client app
+    credentials: true,
+}));
 app.use(helmet());
 app.use('/', routes);
 

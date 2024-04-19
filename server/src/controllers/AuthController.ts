@@ -57,7 +57,7 @@ class AuthController {
 
 
         // send the jwt in the response
-        res.send({ message: "User created successfully", user: { id: user.identifiers[0].id, username: data.username, email: data.email }});
+        res.send({ token:token});
 
 
     };

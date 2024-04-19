@@ -26,7 +26,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                         enableSystem
                         disableTransitionOnChange
                     >
-                        {children}
                         <FetchUser>{children}</FetchUser>
                     </ThemeProvider>
                 </body>
