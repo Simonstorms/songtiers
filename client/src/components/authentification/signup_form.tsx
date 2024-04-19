@@ -19,8 +19,8 @@ import { useSignupForm } from "@/app/signup/useSignupForm";
 // Updating the schema to include first and last name fields
 const formSchema = z
     .object({
-        firstName: z.string().min(1, { message: "First name is required." }),
-        lastName: z.string().min(1, { message: "Last name is required." }),
+        firstname: z.string().min(1, { message: "First name is required." }),
+        lastname: z.string().min(1, { message: "Last name is required." }),
         email: z.string().email({ message: "Invalid email address." }),
         password: z
             .string()
@@ -41,8 +41,8 @@ export function SignupForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            firstName: "",
-            lastName: "",
+            firstname: "",
+            lastname: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -60,7 +60,7 @@ export function SignupForm() {
                     {/* Flex container for inline fields */}
                     <FormField
                         control={form.control}
-                        name="firstName"
+                        name="firstname"
                         render={({ field }) => (
                             <FormItem className="flex-1">
                                 <FormLabel>First Name</FormLabel>
@@ -76,7 +76,7 @@ export function SignupForm() {
                     />
                     <FormField
                         control={form.control}
-                        name="lastName"
+                        name="lastname"
                         render={({ field }) => (
                             <FormItem className="flex-1">
                                 <FormLabel>Last Name</FormLabel>

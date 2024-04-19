@@ -31,7 +31,7 @@ class AuthController {
             .getOne();
 
         if (existingUser) {
-            res.status(400).send({ message: "Username or email already exists" });
+            res.status(400).send({ message: "Email already exists" });
             return;
         }
 

@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 
 // Updated structure for the form data to include first and last name
 interface FormData {
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     email: string;
     password: string;
     confirmPassword: string; // Include confirmPassword in the FormData
@@ -34,7 +34,7 @@ export function useSignupForm() {
             if (response.ok) {
                 console.log("Response data:", data);
                 localStorage.setItem("token", data.token);
-                router.push("/dashboard"); // Redirect user to dashboard or appropriate page
+                router.push("/user/simon"); // Redirect user to dashboard or appropriate page
             } else {
                 console.error("Signup failed:", data.message);
             }
