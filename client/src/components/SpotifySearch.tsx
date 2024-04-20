@@ -1,15 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import SearchBar from "@/components/Searchbar";
 import getAccessToken from "@/app/api/accessToken";
+import Image from "next/image";
+import SongResults from "@/components/SongResults";
 
 export interface Track {
     id: string;
     name: string;
     artists: Array<{ name: string }>;
+    album: {
+        images: Array<{ url: string; height: number; width: number }>;
+    };
 }
 
-const SearchComponent: React.FC = () => {
+const SearchComponent: FC = () => {
     const [songs, setSongs] = useState<Track[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -27,7 +32,7 @@ const SearchComponent: React.FC = () => {
             }
 
             const res = await fetch(
-                `https://api.spotify.com/v1/search?q=${encodeURIComponent(searchQuery)}&type=track`,
+                `https://api.spotify.com/v1/search?q=${encodeURIComponent(searchQuery)}&type=track&limit=5`,
                 {
                     headers: {
                         Authorization: `Bearer ${tokenData}`,
@@ -45,12 +50,7 @@ const SearchComponent: React.FC = () => {
     return (
         <div>
             <SearchBar onSearch={setSearchQuery} />
-            {songs.map((song) => (
-                <div key={song.id}>
-                    {song.name} by{" "}
-                    {song.artists.map((artist) => artist.name).join(", ")}
-                </div>
-            ))}
+            <SongResults songs={songs} />
         </div>
     );
 };
