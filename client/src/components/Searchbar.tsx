@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Input } from "@/components/ui/input";
 
 interface SearchBarProps {
     onSearch: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
     const [query, setQuery] = useState<string>("");
 
     // Handle input change directly to trigger search

@@ -43,12 +43,12 @@ const SearchComponent: FC = () => {
             setSongs(data.tracks.items);
         };
 
-        const delayDebounce = setTimeout(fetchSongs, 300);
+        const delayDebounce = setTimeout(fetchSongs, 30);
         return () => clearTimeout(delayDebounce);
     }, [searchQuery]);
 
     return (
-        <div>
+        <div className={" "}>
             <SearchBar onSearch={setSearchQuery} />
             <SongResults songs={songs} />
         </div>
