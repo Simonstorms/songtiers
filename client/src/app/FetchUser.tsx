@@ -12,9 +12,9 @@ export const FetchUser = ({ children }: FetchUserProps) => {
     useEffect(() => {
         (async () => {
             // Check if the current path is the home page
-            // if (pathname === "/" || "/signin" || "signup") {
-            //     return;
-            // }
+            if (pathname === "/signin" || pathname === "/signup") {
+                return;
+            }
 
             // Try to get a jwt
             let jwt = localStorage.getItem("token");
