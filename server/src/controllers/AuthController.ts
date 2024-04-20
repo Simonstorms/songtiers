@@ -62,7 +62,7 @@ class AuthController {
 
 
         // send the jwt in the response
-        res.send({ token:token});
+        res.send({ token:token, userId:user.identifiers[0].id});
 
 
     };
@@ -94,7 +94,7 @@ class AuthController {
         );
 
         // Send the JWT to the user
-        res.send({token: token });
+        res.send({token: token ,userId:user.id});
     }
     static getuser = async (req:Request,res:Response)=>{
         const authHeader = req.headers['authorization'];

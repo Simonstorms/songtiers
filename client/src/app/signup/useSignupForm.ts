@@ -34,7 +34,7 @@ export function useSignupForm() {
             if (response.ok) {
                 console.log("Response data:", data);
                 localStorage.setItem("token", data.token);
-                router.push("/user/simon"); // Redirect user to dashboard or appropriate page
+                router.push(`/user/${data.userId}`); // Redirect user to dashboard or appropriate page
             } else {
                 console.error("Signup failed:", data.message);
             }

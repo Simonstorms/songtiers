@@ -28,7 +28,7 @@ export function useSigninForm() {
             if (response.ok) {
                 console.log("Response data:", data);
                 localStorage.setItem("token", data.token);
-                router.push(`user/simon`); // Assuming 'simon' is a placeholder
+                router.push(`user/${data.userId}`); // Assuming 'simon' is a placeholder
             } else {
                 console.error("Login failed:", data.message);
             }
