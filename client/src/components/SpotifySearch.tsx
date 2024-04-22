@@ -14,7 +14,9 @@ export interface Track {
     };
 }
 
-const SearchComponent: FC = () => {
+const SearchComponent: FC<{ setOpen: (open: boolean) => void }> = ({
+    setOpen,
+}) => {
     const [songs, setSongs] = useState<Track[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -50,7 +52,7 @@ const SearchComponent: FC = () => {
     return (
         <div className={" "}>
             <SearchBar onSearch={setSearchQuery} />
-            <SongResults songs={songs} />
+            <SongResults setOpen={setOpen} songs={songs} />
         </div>
     );
 };
