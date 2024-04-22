@@ -6,6 +6,9 @@ export class SongTiers{
     id!:number
 
     @Column()
+    position!:number
+
+    @Column()
     name!:string
 
     @Column()

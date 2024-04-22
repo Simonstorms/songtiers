@@ -1,7 +1,7 @@
 import { Track } from "@/components/SpotifySearch";
 import { FC } from "react";
 import Image from "next/image";
-import { safeSong } from "@/lib/safeSong";
+import { saveSong } from "@/lib/saveSong";
 
 interface SongResultsProps {
     songs: Track[];
@@ -15,7 +15,7 @@ const SongResults: FC<SongResultsProps> = ({ songs, setOpen }) => {
                 <button
                     onClick={() => {
                         setOpen(false);
-                        safeSong(song);
+                        saveSong(song);
                     }}
                 >
                     <li key={song.id} className={"flex gap-3 my-4"}>

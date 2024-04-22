@@ -6,12 +6,18 @@ dotenv.config();
 const secret:string = process.env.JWT_SECRET!;
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
-    // get the jwt token from the head
-    const token = <string>req.headers["auth"];
+    // get the jwt token from the Authorization header
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Bearer Token
+
     let jwtPayload;
 
     // try to validate the token and get data
     try {
+        if (!token) {
+            res.status(401).send();
+            return;
+        }
         jwtPayload = <any>jwt.verify(token, secret);
         res.locals.jwtPayload = jwtPayload;
     } catch (error) {
@@ -22,9 +28,9 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
 
     // the token is valid for 1 hour
     // we want to send a new token on every request
-    const { userId, username } = jwtPayload;
-    const newToken = jwt.sign({userId, username}, secret, {
-        expiresIn: "1h"
+    const { userId, firstname } = jwtPayload;
+    const newToken = jwt.sign({userId, firstname}, secret, {
+        expiresIn: "1d"
     });
     res.setHeader("token", newToken);
 
