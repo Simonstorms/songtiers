@@ -4,7 +4,7 @@ import { Track } from "@/components/SpotifySearch";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const jwt_token = localStorage.getItem("token");
 
-export const saveSong = async (song: Track) => {
+export const saveSong = async (song: Track, position: number) => {
     if (!jwt_token) {
         console.log("user not logged in");
         return;
@@ -17,10 +17,10 @@ export const saveSong = async (song: Track) => {
                 Authorization: `Bearer ${jwt_token}`,
             },
             body: JSON.stringify({
-                song: song.name, // Changed from songName to match server expectation
+                songName: song.name, // Changed from songName to match server expectation
                 artist: song.artists.map((artist) => artist.name).join(", "),
                 image: song.album.images[0]?.url,
-                position: 1,
+                position: position,
             }),
         });
 

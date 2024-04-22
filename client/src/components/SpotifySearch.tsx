@@ -2,7 +2,6 @@
 import { FC, useEffect, useState } from "react";
 import SearchBar from "@/components/Searchbar";
 import getAccessToken from "@/app/api/accessToken";
-import Image from "next/image";
 import SongResults from "@/components/SongResults";
 
 export interface Track {
@@ -14,9 +13,12 @@ export interface Track {
     };
 }
 
-const SearchComponent: FC<{ setOpen: (open: boolean) => void }> = ({
-    setOpen,
-}) => {
+interface SearchComponent {
+    setOpen: (open: boolean) => void;
+    position: number;
+}
+
+const SearchComponent: FC<SearchComponent> = ({ setOpen, position }) => {
     const [songs, setSongs] = useState<Track[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -52,7 +54,7 @@ const SearchComponent: FC<{ setOpen: (open: boolean) => void }> = ({
     return (
         <div className={" "}>
             <SearchBar onSearch={setSearchQuery} />
-            <SongResults setOpen={setOpen} songs={songs} />
+            <SongResults setOpen={setOpen} songs={songs} position={position} />
         </div>
     );
 };

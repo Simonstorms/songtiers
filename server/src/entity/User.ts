@@ -1,9 +1,10 @@
 import {
     Entity,
     PrimaryGeneratedColumn,
-    Column,
+    Column, OneToMany
 
 } from "typeorm";
+import { UserSongTier } from "./UserSongTier";
 
 @Entity()
 export class User {
@@ -23,5 +24,7 @@ export class User {
     password!: string;
 
 
+    @OneToMany(() => UserSongTier, (userSongTier) => userSongTier.user)
+    userSongTier!: UserSongTier[];
 
 }

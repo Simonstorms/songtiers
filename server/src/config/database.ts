@@ -1,7 +1,8 @@
 import { DataSource } from "typeorm";
 import { User } from "../entity/User";
 import dotenv from "dotenv";
-import { SongTiers } from "../entity/SongTiers";
+import { Song } from "../entity/Song";
+import { UserSongTier } from "../entity/UserSongTier";
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const datasource =  new DataSource( {
     username: process.env.POSTGRES_USER ,
     password: process.env.POSTGRES_PASSWORD ,
     database: process.env.POSTGRES_DB ,
-    entities: [User, SongTiers],
+    entities: [User, Song, UserSongTier],
     synchronize: true,
 });
 

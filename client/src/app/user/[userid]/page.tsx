@@ -10,11 +10,11 @@ const Page: FC = () => {
                 Select your Top 5 Songs
             </h1>
             <div className="w-[600px] flex flex-col gap-5">
-                <SongField />
-                <SongField />
-                <SongField />
-                <SongField />
-                <SongField />
+                <SongField position={1} />
+                <SongField position={2} />
+                <SongField position={3} />
+                <SongField position={4} />
+                <SongField position={5} />
             </div>
         </div>
     );

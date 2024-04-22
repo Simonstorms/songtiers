@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -9,8 +9,12 @@ import {
 } from "@/components/ui/dialog";
 
 import SearchComponent from "@/components/SpotifySearch";
+import ShowTopSong from "@/components/ShowTopSong";
 
-const SongField = () => {
+export interface SongFieldProps {
+    position: number;
+}
+const SongField: FC<SongFieldProps> = ({ position }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -22,7 +26,7 @@ const SongField = () => {
                             "py-8 rounded border-2 border-gray-700 w-[600px]"
                         }
                     >
-                        This is the place where the song gets displayed
+                        <ShowTopSong position={position} />
                     </button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
@@ -32,7 +36,7 @@ const SongField = () => {
                             You can always change your Selection afterwards
                         </DialogDescription>
                     </DialogHeader>
-                    <SearchComponent setOpen={setOpen} />
+                    <SearchComponent setOpen={setOpen} position={position} />
                 </DialogContent>
             </Dialog>
         </>

@@ -6,16 +6,17 @@ import { saveSong } from "@/lib/saveSong";
 interface SongResultsProps {
     songs: Track[];
     setOpen: (open: boolean) => void;
+    position: number;
 }
 
-const SongResults: FC<SongResultsProps> = ({ songs, setOpen }) => {
+const SongResults: FC<SongResultsProps> = ({ songs, setOpen, position }) => {
     return (
         <ul>
             {songs.map((song) => (
                 <button
                     onClick={() => {
                         setOpen(false);
-                        saveSong(song);
+                        saveSong(song, position);
                     }}
                 >
                     <li key={song.id} className={"flex gap-3 my-4"}>
