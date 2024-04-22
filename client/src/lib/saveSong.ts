@@ -2,9 +2,9 @@
 import { Track } from "@/components/SpotifySearch";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const jwt_token = localStorage.getItem("token");
 
 export const saveSong = async (song: Track, position: number) => {
+    const jwt_token = localStorage.getItem("token");
     if (!jwt_token) {
         console.log("user not logged in");
         return;
