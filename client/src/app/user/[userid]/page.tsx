@@ -1,8 +1,11 @@
 "use client";
 import { FC } from "react";
 
-import SongField from "@/components/SongField";
+import dynamic from "next/dynamic";
 
+const SongField = dynamic(() => import("@/components/SongField"), {
+    ssr: false,
+});
 const Page: FC = () => {
     return (
         <div className="flex flex-col gap-10 items-center">
