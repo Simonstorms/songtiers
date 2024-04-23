@@ -3,20 +3,24 @@ import { Track } from "@/components/SpotifySearch";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export type UseSongReturn = {
-    error: true;
-    song: null;
-    saveSong: null;
-    fetchSong: null;
-} | 
-{
-    error: false;
-    song: SongData;
-    saveSong: (input: Track) => Promise<void>;
-    fetchSong:  () => Promise<void>;
-}
+export type UseSongReturn =
+    | {
+          error: true;
+          song: null;
+          saveSong: null;
+          fetchSong: null;
+      }
+    | {
+          error: false;
+          song: SongData;
+          saveSong: (input: Track) => Promise<void>;
+          fetchSong: () => Promise<void>;
+      };
 
-export const useSongs = (token: string | null, position: number): UseSongReturn => {
+export const useSongs = (
+    token: string | null,
+    position: number,
+): UseSongReturn => {
     const [song, setSong] = useState<SongData | null>(null);
 
     useEffect(() => {
@@ -35,32 +39,24 @@ export const useSongs = (token: string | null, position: number): UseSongReturn 
     const fetchSongs = async () => {
         const [err, fetchedSong] = await fetchSongsFromApi(token, position);
         if (err) {
-            console.error("error with fetching", err);
             setSong(null);
         } else {
-            console.log("fetched song", fetchedSong);
             setSong(fetchedSong);
         }
     };
     const addSong = async (songInput: Track) => {
         const [err, res] = await saveSong(token, songInput, position);
         if (err) {
-            console.error(err);
             setSong(null);
         } else {
-            console.log("add song");
-            console.log("before sett adding", song);
             await fetchSongs();
-            console.log("after set adding", song);
         }
     };
 
     useEffect(() => {
-        console.log("useEffect Song in useSong", song);
         (async () => {
             await fetchSongs();
         })();
-        console.log("useEffect after fetched song", song);
     }, []);
 
     return {

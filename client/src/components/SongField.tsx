@@ -28,10 +28,13 @@ const SongField: FC<SongFieldProps> = ({ position }) => {
         <>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <button className="py-8 rounded border-2 border-gray-700 w-[600px]">
+                    {/*later: fix Hydration Error in TialogField*/}
+                    <div className="py-8 rounded border-2 border-gray-700 w-[600px]">
                         <ShowTopSong song={song} />
-                    </button>
+                        <button onClick={() => console.log("lol")}>x</button>
+                    </div>
                 </DialogTrigger>
+
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
                         Select the Song you want to add
