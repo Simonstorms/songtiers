@@ -1,8 +1,6 @@
 import { Track } from "@/components/SpotifySearch";
 import { FC } from "react";
 import Image from "next/image";
-import { useSongs } from "@/lib/useSongs";
-
 
 interface SongResultsProps {
     songs: Track[];
@@ -11,7 +9,6 @@ interface SongResultsProps {
 }
 
 const SongResults: FC<SongResultsProps> = ({ songs, setOpen, saveSong }) => {
-
     return (
         <ul>
             {songs.map((song) => (

@@ -1,18 +1,15 @@
 "use client";
-import { FC, useEffect, useState } from "react";
-import { SongFieldProps } from "@/components/SongField";
+import { FC } from "react";
 import Image from "next/image";
-import { SongData, useSongs } from "@/lib/useSongs";
-
+import { SongData } from "@/lib/useSongs";
 
 export interface ShowTopsSongProps {
     song: SongData;
 }
 
-const ShowTopSong: FC<ShowTopsSongProps> = ({ song}) => {
-
+const ShowTopSong: FC<ShowTopsSongProps> = ({ song }) => {
     if (!song) {
-        return <p>Please select a Song</p>
+        return <p>Please select a Song</p>;
     }
 
     return (

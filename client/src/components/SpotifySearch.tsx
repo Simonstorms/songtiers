@@ -16,7 +16,6 @@ export interface Track {
 interface SpotifySearchProps {
     setOpen: (open: boolean) => void;
     saveSong: (input: Track) => Promise<void>;
-
 }
 
 const SpotifySearch: FC<SpotifySearchProps> = ({ setOpen, saveSong }) => {
@@ -55,7 +54,7 @@ const SpotifySearch: FC<SpotifySearchProps> = ({ setOpen, saveSong }) => {
     return (
         <div className={" "}>
             <SearchBar onSearch={setSearchQuery} />
-            <SongResults setOpen={setOpen} songs={songs} saveSong={saveSong}/>
+            <SongResults setOpen={setOpen} songs={songs} saveSong={saveSong} />
         </div>
     );
 };

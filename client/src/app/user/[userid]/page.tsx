@@ -1,14 +1,9 @@
 "use client";
-import { FC, useEffect, useState } from "react";
-import SpotifyComponentProps from "@/components/SpotifySearch";
-import SongResults from "@/components/SongResults";
+import { FC } from "react";
+
 import SongField from "@/components/SongField";
-import { useSongs } from "@/lib/useSongs";
 
 const Page: FC = () => {
-    const jwtToken =
-        typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    
     return (
         <div className="flex flex-col gap-10 items-center">
             <h1 className="font-bold mt-16 text-4xl">

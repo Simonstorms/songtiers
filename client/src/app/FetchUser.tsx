@@ -21,7 +21,10 @@ export const FetchUser = ({ children }: FetchUserProps) => {
             }
 
             // Try to get a jwt
-            let jwt = localStorage.getItem("token");
+            let jwt =
+                typeof window !== "undefined"
+                    ? localStorage.getItem("token")
+                    : null;
 
             if (!jwt) {
                 router.push("/signup"); // Redirect if no JWT is found
