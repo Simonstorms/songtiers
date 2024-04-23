@@ -11,6 +11,7 @@ import {
 import ShowTopSong from "@/components/ShowTopSong";
 import { useSongs } from "@/lib/useSongs";
 import SpotifySearch from "@/components/SpotifySearch";
+import { Button } from "@/components/ui/button";
 
 export interface SongFieldProps {
     position: number;
@@ -28,14 +29,20 @@ const SongField: FC<SongFieldProps> = ({ position }) => {
         <>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    {/*later: fix Hydration Error in TialogField*/}
-                    <div className="py-8 rounded border-2 border-gray-700 w-[600px]">
+                    <div className="p-8 flex justify-between rounded border-2 border-gray-700 w-[600px]">
                         <ShowTopSong song={song} />
-                        <button onClick={() => console.log("lol")}>x</button>
+                        <Button
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                console.log("lol");
+                            }}
+                        >
+                            Delete
+                        </Button>{" "}
                     </div>
                 </DialogTrigger>
 
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className=" sm:max-w-[500px]">
                     <DialogHeader>
                         Select the Song you want to add
                         <DialogDescription>

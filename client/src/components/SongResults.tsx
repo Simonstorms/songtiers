@@ -10,23 +10,45 @@ interface SongResultsProps {
 
 const SongResults: FC<SongResultsProps> = ({ songs, setOpen, saveSong }) => {
     return (
-        <ul>
+        <ul
+            style={{
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
             {songs.map((song) => (
                 <button
+                    key={song.id}
                     onClick={async () => {
                         setOpen(false);
                         await saveSong!(song);
                     }}
                 >
-                    <li key={song.id} className={"flex gap-3 my-4"}>
+                    <li className={"flex  gap-3 my-4"}>
                         <Image
                             src={song.album.images[0]?.url}
                             alt={"Song Cover"}
                             height={50}
                             width={50}
                         />
-                        {song.name} by{" "}
-                        {song.artists.map((artist) => artist.name).join(", ")}
+                        <div className="flex-col text-left">
+                            <p>
+                                {song.name.length > 50
+                                    ? song.name.substring(0, 50) + "..."
+                                    : song.name}
+                            </p>
+                            <p>
+                                by:{" "}
+                                {(() => {
+                                    const artistNames = song.artists
+                                        .map((artist) => artist.name)
+                                        .join(", ");
+                                    return artistNames.length > 40
+                                        ? artistNames.substring(0, 40) + "..."
+                                        : artistNames;
+                                })()}
+                            </p>
+                        </div>
                     </li>
                 </button>
             ))}

@@ -13,10 +13,12 @@ const ShowTopSong: FC<ShowTopsSongProps> = ({ song }) => {
     }
 
     return (
-        <div className={"flex"}>
-            <p>{song.name}</p>
-            <p>{song.artist}</p>
+        <div className={"flex gap-5"}>
             <Image src={song.image} alt={song.name} height={50} width={50} />
+            <div className="flex-col">
+                <p>{song.name}</p>
+                <p>by: {song.artist}</p>
+            </div>
         </div>
     );
 };
