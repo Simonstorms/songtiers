@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -8,14 +8,23 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import SearchComponent from "@/components/SpotifySearch";
+import SpotifyComponentProps from "@/components/SpotifySearch";
 import ShowTopSong from "@/components/ShowTopSong";
+import { useSongs } from "@/lib/useSongs";
+import SpotifySearch from "@/components/SpotifySearch";
 
 export interface SongFieldProps {
     position: number;
 }
+
 const SongField: FC<SongFieldProps> = ({ position }) => {
     const [open, setOpen] = useState(false);
+    const jwtToken =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const { error, saveSong, song, fetchSong } = useSongs(jwtToken, position);
+
+    if (error)
+        return null;
 
     return (
         <>
@@ -26,7 +35,7 @@ const SongField: FC<SongFieldProps> = ({ position }) => {
                             "py-8 rounded border-2 border-gray-700 w-[600px]"
                         }
                     >
-                        <ShowTopSong position={position} />
+                        <ShowTopSong song={song} />
                     </button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
@@ -36,7 +45,7 @@ const SongField: FC<SongFieldProps> = ({ position }) => {
                             You can always change your Selection afterwards
                         </DialogDescription>
                     </DialogHeader>
-                    <SearchComponent setOpen={setOpen} position={position} />
+                    <SpotifySearch setOpen={setOpen} saveSong={saveSong}/>
                 </DialogContent>
             </Dialog>
         </>

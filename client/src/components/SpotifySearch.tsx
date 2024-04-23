@@ -13,12 +13,13 @@ export interface Track {
     };
 }
 
-interface SearchComponent {
+interface SpotifySearchProps {
     setOpen: (open: boolean) => void;
-    position: number;
+    saveSong: (input: Track) => Promise<void>;
+
 }
 
-const SearchComponent: FC<SearchComponent> = ({ setOpen, position }) => {
+const SpotifySearch: FC<SpotifySearchProps> = ({ setOpen, saveSong }) => {
     const [songs, setSongs] = useState<Track[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -54,9 +55,9 @@ const SearchComponent: FC<SearchComponent> = ({ setOpen, position }) => {
     return (
         <div className={" "}>
             <SearchBar onSearch={setSearchQuery} />
-            <SongResults setOpen={setOpen} songs={songs} position={position} />
+            <SongResults setOpen={setOpen} songs={songs} saveSong={saveSong}/>
         </div>
     );
 };
 
-export default SearchComponent;
+export default SpotifySearch;

@@ -1,22 +1,24 @@
 import { Track } from "@/components/SpotifySearch";
 import { FC } from "react";
 import Image from "next/image";
-import { saveSong } from "@/lib/saveSong";
+import { useSongs } from "@/lib/useSongs";
+
 
 interface SongResultsProps {
     songs: Track[];
     setOpen: (open: boolean) => void;
-    position: number;
+    saveSong: (input: Track) => Promise<void>;
 }
 
-const SongResults: FC<SongResultsProps> = ({ songs, setOpen, position }) => {
+const SongResults: FC<SongResultsProps> = ({ songs, setOpen, saveSong }) => {
+
     return (
         <ul>
             {songs.map((song) => (
                 <button
-                    onClick={() => {
+                    onClick={async () => {
                         setOpen(false);
-                        saveSong(song, position);
+                        await saveSong!(song);
                     }}
                 >
                     <li key={song.id} className={"flex gap-3 my-4"}>
