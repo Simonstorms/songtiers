@@ -33,8 +33,8 @@ const SongResults: FC<SongResultsProps> = ({ songs, setOpen, saveSong }) => {
                         />
                         <div className="flex-col text-left">
                             <p>
-                                {song.name.length > 50
-                                    ? song.name.substring(0, 50) + "..."
+                                {song.name.length > 40
+                                    ? song.name.substring(0, 40) + "..."
                                     : song.name}
                             </p>
                             <p>

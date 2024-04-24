@@ -6,6 +6,8 @@ const router = Router();
 
  router.post('/addsong',[checkJwt],  SongController.addSong);
 router.post('/readsong',[checkJwt],  SongController.readSong);
+router.post('/deletesong',[checkJwt],  SongController.deleteSong);
+
 
 
 export default router

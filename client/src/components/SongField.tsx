@@ -21,28 +21,39 @@ const SongField: FC<SongFieldProps> = ({ position }) => {
     const [open, setOpen] = useState(false);
     const jwtToken =
         typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    const { error, saveSong, song, fetchSong } = useSongs(jwtToken, position);
+    const { error, saveSong, deleteSong, song, fetchSong } = useSongs(
+        jwtToken,
+        position,
+    );
 
     if (error) return null;
 
     return (
-        <>
+        <div className="flex  rounded-xl border-2 w-[650px]  border-gray-700  h-24">
+            <div className="flex text-xl rounded-l-[10px] font-bold w-24 bg-green-300 items-center justify-center ">
+                {position + "."}
+            </div>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <div className="p-8 flex justify-between rounded border-2 border-gray-700 w-[600px]">
+                    <div
+                        className={`px-8 flex items-center w-[600px] ${song ? "justify-between" : "justify-center"}`}
+                    >
                         <ShowTopSong song={song} />
-                        <Button
-                            onClick={(event) => {
-                                event.stopPropagation();
-                                console.log("lol");
-                            }}
-                        >
-                            Delete
-                        </Button>{" "}
+
+                        {song && (
+                            <Button
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    deleteSong();
+                                }}
+                            >
+                                Delete
+                            </Button>
+                        )}
                     </div>
                 </DialogTrigger>
 
-                <DialogContent className=" sm:max-w-[500px]">
+                <DialogContent className="sm:max-w-[500px]">
                     <DialogHeader>
                         Select the Song you want to add
                         <DialogDescription>
@@ -52,7 +63,7 @@ const SongField: FC<SongFieldProps> = ({ position }) => {
                     <SpotifySearch setOpen={setOpen} saveSong={saveSong} />
                 </DialogContent>
             </Dialog>
-        </>
+        </div>
     );
 };
 export default SongField;

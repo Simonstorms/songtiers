@@ -68,6 +68,44 @@ class SongController{
             res.json({ message: 'No song found at this position' });
         }
     }
+    static deleteSong = async (req:Request, res: Response)=>{
+        const {position} = req.body;
+        const { userId } = res.locals.jwtPayload;
+
+        // Get the songId from UserSongTier table
+        const userSongTier = await datasource
+            .createQueryBuilder()
+            .select('userSongTier.songId')
+            .from(UserSongTier,'userSongTier')
+            .where("userSongTier.userId = :userId",{ userId })
+            .andWhere("userSongTier.position = :position",{position})
+            .getOne();
+
+        if (!userSongTier) {
+            res.status(404).json({ message: 'No song found at this position' });
+            return;
+        }
+
+        const songId = userSongTier.songId;
+
+        // Delete the song from UserSongTier table
+        await datasource
+            .createQueryBuilder()
+            .delete()
+            .from(UserSongTier)
+            .where('songId = :songId',{songId})
+            .execute();
+
+        // Delete the song from Song table
+        await datasource
+            .createQueryBuilder()
+            .delete()
+            .from(Song)
+            .where('id = :songId',{songId})
+            .execute();
+
+        res.json({ message: 'Song deleted' });
+    }
 }
 
 export default SongController
