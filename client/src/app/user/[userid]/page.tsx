@@ -2,24 +2,21 @@
 import { FC } from "react";
 
 import dynamic from "next/dynamic";
+import Navbar from "@/components/Navbar";
 
 const SongField = dynamic(() => import("@/components/SongField"), {
     ssr: false,
 });
 const Page: FC = () => {
     return (
-        <div className="flex flex-col gap-10 items-center">
-            <h1 className="font-bold mt-16 text-4xl">
-                Select your Top 5 Songs
-            </h1>
-            <div className="w-[600px] flex flex-col gap-5">
-                <SongField position={1} />
-                <SongField position={2} />
-                <SongField position={3} />
-                <SongField position={4} />
-                <SongField position={5} />
+        <>
+            <Navbar />
+            <div className="flex flex-col items-center mt-20 gap-7">
+                {[1, 2, 3, 4, 5].map((position) => (
+                    <SongField key={position} position={position} />
+                ))}
             </div>
-        </div>
+        </>
     );
 };
 
