@@ -38,7 +38,7 @@ export function SigninForm() {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit((data) => handleSignin(data))}
-                className="space-y-8"
+                className="flex flex-col items-center space-y-8"
             >
                 <FormField
                     control={form.control}
@@ -61,7 +61,11 @@ export function SigninForm() {
                         <FormItem>
                             <FormLabel>Passsword</FormLabel>
                             <FormControl>
-                                <Input placeholder="******" {...field} />
+                                <Input
+                                    placeholder="******"
+                                    type="password"
+                                    {...field}
+                                />
                             </FormControl>
 
                             <FormMessage />

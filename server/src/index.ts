@@ -19,11 +19,11 @@ datasource.initialize().then(() =>{
 }).catch((err)=>{
     console.log(err);
 });
-
+console.log()
 //middleware
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.CLIENT_URL,
     credentials: true,
 }));
 app.use(helmet());

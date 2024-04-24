@@ -29,8 +29,8 @@ const SongField: FC<SongFieldProps> = ({ position }) => {
     if (error) return null;
 
     return (
-        <div className="flex  rounded-xl border-2 w-[650px]  border-gray-700  h-24">
-            <div className="flex text-xl rounded-l-[10px] font-bold w-24 bg-green-300 items-center justify-center ">
+        <div className="flex  rounded-xl border-2 w-[650px] dark:border-[#FAFAFA] border-gray-700  h-24">
+            <div className="flex text-2xl rounded-l-[10px] font-bold w-24 bg-black dark:bg-white bg-opacity-10 dark:bg-opacity-20 items-center justify-center ">
                 {position + "."}
             </div>
             <Dialog open={open} onOpenChange={setOpen}>

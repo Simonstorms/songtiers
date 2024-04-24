@@ -23,7 +23,7 @@ export const FetchUser = ({ children }: FetchUserProps) => {
                     : null;
 
             if (!jwt) {
-                router.push("/signup"); // Redirect if no JWT is found
+                router.push("/signin"); // Redirect if no JWT is found
                 return;
             }
 
@@ -45,10 +45,10 @@ export const FetchUser = ({ children }: FetchUserProps) => {
                     // Save user in local storage
                     localStorage.setItem("user", user.userId);
                 } else {
-                    router.push("/signup");
+                    router.push("/signin");
                 }
             } catch (error) {
-                router.push("/signup");
+                router.push("/signin");
             }
         })();
     }, [router]); // Include dependencies in the useEffect hook

@@ -5,7 +5,7 @@ import { BackgroundGradientAnimation } from "@/components/ui/background-gradient
 export default function Home() {
     return (
         <BackgroundGradientAnimation>
-            <Navbar />
+            <Navbar headline={"Test"} />
         </BackgroundGradientAnimation>
     );
 }

@@ -49,6 +49,7 @@ export function SignupForm() {
         },
     });
 
+    // Inside your SignupForm component
     return (
         <Form {...form}>
             <form
@@ -56,8 +57,6 @@ export function SignupForm() {
                 className="space-y-8"
             >
                 <div className="flex space-x-4">
-                    {" "}
-                    {/* Flex container for inline fields */}
                     <FormField
                         control={form.control}
                         name="firstname"
@@ -138,7 +137,11 @@ export function SignupForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Sign Up</Button>
+                <div className="flex justify-center mt-4">
+                    {" "}
+                    {/* Center the button horizontally */}
+                    <Button type="submit">Sign Up</Button>
+                </div>
             </form>
         </Form>
     );
