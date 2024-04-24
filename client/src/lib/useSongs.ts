@@ -9,12 +9,14 @@ export type UseSongReturn =
           song: null;
           saveSong: null;
           fetchSong: null;
+          deleteSong: null;
       }
     | {
           error: false;
           song: SongData;
           saveSong: (input: Track) => Promise<void>;
           fetchSong: () => Promise<void>;
+          deleteSong: () => Promise<void>;
       };
 
 export const useSongs = (
@@ -23,9 +25,7 @@ export const useSongs = (
 ): UseSongReturn => {
     const [song, setSong] = useState<SongData | null>(null);
 
-    useEffect(() => {
-        //alert("song changed: " + JSON.stringify( song));
-    }, [song]);
+    useEffect(() => {}, [song]);
 
     if (!token) {
         return {
@@ -33,6 +33,7 @@ export const useSongs = (
             song: null,
             saveSong: null,
             fetchSong: null,
+            deleteSong: null,
         };
     }
 
@@ -53,6 +54,15 @@ export const useSongs = (
         }
     };
 
+    const removeSong = async () => {
+        const [err, res] = await deleteSong(token, position);
+        if (err) {
+            setSong(null);
+        } else {
+            await fetchSongs();
+        }
+    };
+
     useEffect(() => {
         (async () => {
             await fetchSongs();
@@ -64,6 +74,7 @@ export const useSongs = (
         song: song!,
         fetchSong: fetchSongs,
         saveSong: addSong,
+        deleteSong: removeSong,
     };
 };
 
@@ -129,6 +140,35 @@ const saveSong = async (token: string, song: Track, position: number) => {
             // Process the successful response, e.g., parse JSON, log a message, update UI
             const result: AddSongResponse = await response.json();
             console.log("Song saved successfully:", result);
+            return [null, result] as const;
+        }
+    } catch (err) {
+        const error = err as Error;
+        return [error, null] as const;
+    }
+};
+const deleteSong = async (token: string, position: number) => {
+    try {
+        const response = await fetch(`${apiUrl}/action/deletesong`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                position: position,
+            }),
+        });
+
+        if (!response.ok) {
+            return [
+                new Error(`HTTP error! status: ${response.status}`),
+                null,
+            ] as const;
+        } else {
+            // Process the successful response, e.g., parse JSON, log a message, update UI
+            const result: AddSongResponse = await response.json();
+            console.log("Song deleted successfully:", result);
             return [null, result] as const;
         }
     } catch (err) {
