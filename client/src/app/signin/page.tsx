@@ -6,6 +6,9 @@ export default function Home() {
         <>
             <div className="flex justify-center items-center min-h-screen ">
                 <SigninForm />
+                <a href={"/signup"}>
+                    <button>Not Registered yet?</button>
+                </a>
             </div>
         </>
     );

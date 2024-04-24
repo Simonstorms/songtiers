@@ -1,17 +1,11 @@
-// Use this directive to mark the component as a client component
 "use client";
-import { useTheme } from "next-themes";
+import Navbar from "@/components/Navbar";
+import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 
 export default function Home() {
     return (
-        <main>
-            <h1>Hello world</h1>
-            <a href={"/signin"}>
-                <button>Login</button>
-            </a>
-            <a href={"/signup"}>
-                <button>Signup</button>
-            </a>
-        </main>
+        <BackgroundGradientAnimation>
+            <Navbar />
+        </BackgroundGradientAnimation>
     );
 }

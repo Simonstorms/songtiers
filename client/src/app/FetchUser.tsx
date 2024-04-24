@@ -12,11 +12,7 @@ export const FetchUser = ({ children }: FetchUserProps) => {
     useEffect(() => {
         (async () => {
             // Check if the current path is the home page
-            if (
-                pathname === "/signin" ||
-                pathname === "/" ||
-                pathname === "/signup"
-            ) {
+            if (pathname === "/" || pathname === "/signup") {
                 return;
             }
 
