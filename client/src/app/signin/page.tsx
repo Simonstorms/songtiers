@@ -7,8 +7,8 @@ export default function Home() {
     return (
         <>
             <Navbar headline={"Signin"} />
-            <div className="flex justify-center mt-32">
-                <div className="inline-flex px-16 py-10 rounded-xl border-2 flex-col gap-5 items-center">
+            <div className="flex justify-center mt-20">
+                <div className="inline-flex px-16 py-10 rounded-xl border-0 sm:border-2 flex-col gap-5 items-center">
                     <SigninForm />
                     <Link href={"/signup"}>Not Registered yet?</Link>
                 </div>
