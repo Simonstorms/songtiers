@@ -33,7 +33,7 @@ const formSchema = z
         },
         {
             message: "Passwords do not match",
-            path: ["passwordConfirm"],
+            path: ["confirmPassword"],
         },
     );
 export function SignupForm() {
@@ -61,7 +61,7 @@ export function SignupForm() {
                         control={form.control}
                         name="firstname"
                         render={({ field }) => (
-                            <FormItem className="flex-1">
+                            <FormItem className="flex-1 ">
                                 <FormLabel>First Name</FormLabel>
                                 <FormControl>
                                     <Input
@@ -77,7 +77,7 @@ export function SignupForm() {
                         control={form.control}
                         name="lastname"
                         render={({ field }) => (
-                            <FormItem className="flex-1">
+                            <FormItem className="flex-1 ">
                                 <FormLabel>Last Name</FormLabel>
                                 <FormControl>
                                     <Input placeholder="Last name" {...field} />

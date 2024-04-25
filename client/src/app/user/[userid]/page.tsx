@@ -1,35 +1,61 @@
 "use client";
-import { FC, useEffect, useRef } from "react";
+import { FC, useCallback } from "react";
 
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 
+import { toPng } from "html-to-image";
 const SongField = dynamic(() => import("@/components/SongField"), {
     ssr: false,
 });
-import domtoimage from "dom-to-image";
+
 import { Button } from "@/components/ui/button";
 
 const Page: FC = () => {
-    const takeScreenshot = () => {
-        const element = document.body;
-        if (element) {
-            domtoimage
-                .toPng(element)
-                .then((dataUrl) => {
-                    const link = document.createElement("a");
-                    link.download = "screenshot.png";
-                    link.href = dataUrl;
-                    link.click();
-                })
-                .catch((error) => {
-                    console.error("oops, something went wrong!", error);
-                });
-        } else {
-            console.error("Body element not found");
-        }
-    };
+    const takeScreenshot = useCallback(() => {
+        toPng(document.body, { cacheBust: true })
+            .then((dataUrl) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+
+                    if (ctx) {
+                        // Set the canvas dimensions to the desired size of the cropped image
+                        const cropWidth = img.width * 0.7; // 60% of the width
+                        const cropHeight = img.height * 0.7; // 60% of the height
+                        canvas.width = cropWidth;
+                        canvas.height = cropHeight;
+
+                        // Draw the image onto the canvas, specifying the source dimensions (sx, sy, sWidth, sHeight)
+                        // and the destination dimensions (dx, dy, dWidth, dHeight)
+                        ctx.drawImage(
+                            img,
+                            img.width * 0.15, // Start at 20% from the left
+                            img.height * 0.15, // Start at 20% from the top
+                            cropWidth,
+                            cropHeight,
+                            0,
+                            0,
+                            cropWidth,
+                            cropHeight,
+                        );
+
+                        // Convert the canvas back to a data URL
+                        const croppedDataUrl = canvas.toDataURL();
+                        const link = document.createElement("a");
+                        link.download = "screenshot.png";
+                        link.href = croppedDataUrl;
+                        link.click();
+                    }
+                };
+                img.src = dataUrl;
+            })
+            .catch((error) => {
+                console.error("oops, something went wrong!", error);
+            });
+    }, []);
     return (
         <BackgroundGradientAnimation>
             <Navbar headline={"Select your Top 5"} />

@@ -44,15 +44,16 @@ const Navbar: React.FC<NavbarProps> = ({ headline }) => {
             </div>
             <h1 className="font-bold z-50 mt-16 text-4xl">{headline}</h1>
             {isUserUrl ? (
-                <a
+                <Button
                     onClick={handleLogout}
                     className="mt-10 z-50 mr-10 cursor-pointer"
+                    variant="link"
                 >
                     Logout
-                </a>
+                </Button>
             ) : (
                 <Link className="mt-10 z-50 mr-10" href={"/signin"}>
-                    Login
+                    <Button variant="link">Login</Button>
                 </Link>
             )}
         </div>

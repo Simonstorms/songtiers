@@ -7,9 +7,8 @@ export const BackgroundGradientAnimation = ({
     secondColor = "221, 74, 255",
     thirdColor = "100, 220, 255",
     fourthColor = "200, 50, 50",
-    fifthColor = "180, 180, 50",
-    pointerColor = "140, 100, 255",
-    size = "90%",
+    fifthColor = "252, 252, 28",
+    size = "70%",
     blendingValue = "hard-light",
     children,
     className,
@@ -22,7 +21,6 @@ export const BackgroundGradientAnimation = ({
     thirdColor?: string;
     fourthColor?: string;
     fifthColor?: string;
-    pointerColor?: string;
     size?: string;
     blendingValue?: string;
     children?: React.ReactNode;
@@ -35,7 +33,6 @@ export const BackgroundGradientAnimation = ({
         document.body.style.setProperty("--third-color", thirdColor);
         document.body.style.setProperty("--fourth-color", fourthColor);
         document.body.style.setProperty("--fifth-color", fifthColor);
-        document.body.style.setProperty("--pointer-color", pointerColor);
         document.body.style.setProperty("--size", size);
         document.body.style.setProperty("--blending-value", blendingValue);
     }, []);
@@ -48,7 +45,7 @@ export const BackgroundGradientAnimation = ({
     return (
         <div
             className={cn(
-                "h-screen w-screen relative overflow-hidden top-0 left-0 bg-[linear-gradient(40deg,var(--gradient-background-start),var(--gradient-background-end))]",
+                "h-screen w-screen relative overflow-hidden top-0 left-0 ]",
                 containerClassName,
             )}
         >
@@ -73,7 +70,7 @@ export const BackgroundGradientAnimation = ({
             <div className={cn("", className)}>{children}</div>
             <div
                 className={cn(
-                    "gradients-container h-full w-full blur-lg",
+                    "gradients-container  h-full w-full blur-lg",
                     isSafari ? "blur-2xl" : "[filter:url(#blurMe)_blur(40px)]",
                 )}
             >

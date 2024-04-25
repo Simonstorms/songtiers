@@ -1,39 +1,40 @@
-"use client";
+// Logic: useSigninForm hook
 
 import { useRouter } from "next/navigation";
-
-// Define the structure for the form data
-interface FormData {
-    email: string;
-    password: string;
-}
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL; // Cast as string to handle undefined
+import { FormInput } from "@/components/authentification/signin_form";
 
 export function useSigninForm() {
     const router = useRouter();
 
-    const handleSubmit = async (formData: FormData) => {
-        console.log(formData);
+    const handleSubmit = async (formData: FormInput, setError: Function) => {
         try {
-            const response = await fetch(`${apiUrl}/auth/signin`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
                 },
-                body: JSON.stringify(formData),
-            });
+            );
 
             const data = await response.json();
             if (response.ok) {
-                console.log("Response data:", data);
                 localStorage.setItem("token", data.token);
-                router.push(`user/${data.userId}`); // Assuming 'simon' is a placeholder
+                router.push(`user/${data.userId}`);
             } else {
-                console.error("Login failed:", data.message);
+                setError("password", {
+                    type: "manual",
+                    message: "Invalid credentials",
+                });
             }
         } catch (error) {
             console.error("Error submitting form:", error);
+            setError("password", {
+                type: "manual",
+                message: "Error submitting form",
+            });
         }
     };
 

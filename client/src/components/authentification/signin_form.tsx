@@ -1,8 +1,8 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,16 +17,18 @@ import { Input } from "@/components/ui/input";
 import { useSigninForm } from "@/app/signin/useSigninForm";
 
 const formSchema = z.object({
-    email: z.string().email({ message: "Invalid email address." }), // Validates that the string is an email
+    email: z.string().email({ message: "Invalid email address" }),
     password: z
         .string()
-        .min(8, { message: "Password must be at least 8 characters." }), // Sets minimum length for password
+        .min(8, { message: "Password must be at least 8 characters" }),
 });
-
+export interface FormInput {
+    email: string;
+    password: string;
+}
 export function SigninForm() {
-    // 1. Define your form.
-    const { handleSubmit: handleSignin } = useSigninForm(); // Use the custom hook
-    const form = useForm<z.infer<typeof formSchema>>({
+    const { handleSubmit: handleSignin } = useSigninForm();
+    const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
@@ -34,22 +36,25 @@ export function SigninForm() {
         },
     });
 
+    const onSubmit = (data: FormInput) => handleSignin(data, form.setError);
     return (
         <Form {...form}>
             <form
-                onSubmit={form.handleSubmit((data) => handleSignin(data))}
+                onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col items-center space-y-8"
             >
                 <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="w-64">
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                                <Input placeholder="email" {...field} />
+                                <Input
+                                    {...field}
+                                    placeholder="email@example.com"
+                                />
                             </FormControl>
-
                             <FormMessage />
                         </FormItem>
                     )}
@@ -57,18 +62,23 @@ export function SigninForm() {
                 <FormField
                     control={form.control}
                     name="password"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Passsword</FormLabel>
+                    render={({ field, fieldState }) => (
+                        <FormItem className="w-64">
+                            <FormLabel>Password</FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="******"
                                     type="password"
                                     {...field}
+                                    placeholder="******"
                                 />
                             </FormControl>
-
-                            <FormMessage />
+                            <FormMessage>
+                                {fieldState.error && (
+                                    <div className="text-red-500">
+                                        {fieldState.error.message}
+                                    </div>
+                                )}
+                            </FormMessage>
                         </FormItem>
                     )}
                 />
