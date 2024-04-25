@@ -4,7 +4,7 @@ This is a music-themed web application built with TypeScript, Next.js, Express.j
 
 ## Description
 
-Songtiers employs Next.js for server-side and client-side rendering, which not only speeds up content delivery but also optimizes the application for search engines. The backend is powered by an Express server, allowing for efficient request handling and API management. The application uses PostgreSQL for data management, ensuring that all user data, including song rankings and user profiles, are securely managed and stored.
+Songtiers employs Next.js for server-side and client-side rendering, which speeds up content delivery and optimizes the application for search engines. The backend is powered by an Express server, allowing for efficient request handling and API management. The application uses PostgreSQL for data management, ensuring that all user data, including song rankings and user profiles, are securely managed and stored.
 
 The application has the following features:
 
@@ -120,7 +120,7 @@ This guide outlines the necessary steps to set up a development environment for 
 ## Setting Up the PostgreSQL Database with Docker Compose
 
 1. Ensure Docker is installed and running on your machine.
-2. Navigate to the root directory of the project where the `docker-compose.yml` file is located.
+2. Navigate to the project's root directory where the `docker-compose.yml` file is located.
 3. Start the PostgreSQL service using Docker Compose:
 
    ```bash
