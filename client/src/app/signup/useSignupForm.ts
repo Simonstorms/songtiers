@@ -17,7 +17,6 @@ export function useSignupForm() {
     const router = useRouter();
 
     const handleSubmit = async (formData: FormData) => {
-        console.log(formData);
         // Prepare the data to be sent to the API
         const { confirmPassword, ...dataToSend } = formData; // Remove confirmPassword before sending
         try {
@@ -32,11 +31,10 @@ export function useSignupForm() {
 
             const data = await response.json();
             if (response.ok) {
-                console.log("Response data:", data);
                 localStorage.setItem("token", data.token);
                 router.push(`/user/${data.userId}`); // Redirect user to dashboard or appropriate page
             } else {
-                console.error("Signup failed:", data.message);
+                console.error("Signup failed");
             }
         } catch (error) {
             console.error("Error submitting form:", error);
