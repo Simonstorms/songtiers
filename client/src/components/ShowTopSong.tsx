@@ -13,17 +13,17 @@ const ShowTopSong: FC<ShowTopsSongProps> = ({ song }) => {
     }
 
     return (
-        <div className={"flex gap-5"}>
+        <div className={"flex gap-2"}>
             <Image src={song.image} alt={song.name} height={40} width={50} />
             <div className="flex-col">
                 <p>
                     {window.innerWidth <= 768 && song.name.length > 22
-                        ? `${song.name.substring(0, 20)}...`
+                        ? `${song.name.substring(0, 22)}...`
                         : song.name}
                 </p>
                 <p>
-                    {window.innerWidth <= 768 && song.artist.length > 22
-                        ? `by: ${song.artist.substring(0, 20)}...`
+                    {window.innerWidth <= 768 && song.artist.length > 17
+                        ? `by: ${song.artist.substring(0, 17)}...`
                         : `by: ${song.artist}`}
                 </p>
             </div>
