@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 import { FetchUser } from "@/app/FetchUser";
 
 export const metadata: Metadata = {
-    title: "Linkal - Analyse your LinkedIn chats",
+    title: "Songtier - Create your Song Ranking",
     description: "by Simon Gneuss",
 };
 
@@ -17,7 +17,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
     return (
         <>
             <html lang="en" suppressHydrationWarning>
-                <head />
                 <body>
                     <ThemeProvider
                         attribute="class"
