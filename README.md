@@ -145,4 +145,4 @@ Ensure all components are interacting correctly for full functionality.
 
 ## Contact
 
-If you have any questions, feel free to reach out to us. You can contact us at `info@simongneuss.com`.
+If you have any questions, feel free to reach out to us. You can contact me at `info@simongneuss.com`.
