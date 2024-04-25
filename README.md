@@ -2,6 +2,9 @@
 
 This is a music-themed web application built with TypeScript, Next.js, Express.js, Typeorm, Postgres and Tailwindcss. The application allows users to rank their top songs and their details.
 
+![Linkal LinkedIn Chats (20)](https://github.com/Simonstorms/songtiers/assets/93795566/06276db9-09ab-41d1-bc1b-952b27bf119a)
+
+
 ## Description
 
 Songtiers employs Next.js for server-side and client-side rendering, which speeds up content delivery and optimizes the application for search engines. The backend is powered by an Express server, allowing for efficient request handling and API management. The application uses PostgreSQL for data management, ensuring that all user data, including song rankings and user profiles, are securely managed and stored.
