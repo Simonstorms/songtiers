@@ -35,24 +35,29 @@ const Navbar: React.FC<NavbarProps> = ({ headline }) => {
             <div>
                 <Button
                     variant="outline"
-                    className="rounded-full z-50 mt-10 ml-10"
+                    className="rounded-full z-50 mr-3 mt-3 ml-3 sm:mt-10 sm:ml-10"
                     size="icon"
                     onClick={toggleTheme}
                 >
                     {isDark ? <SunMediumIcon /> : <MoonIcon />}
                 </Button>
             </div>
-            <h1 className="font-bold z-50 mt-16 text-4xl">{headline}</h1>
+            <h1 className="font-bold z-50 mt-7 sm:mt-12 text-xl sm:text-4xl">
+                {headline}
+            </h1>
             {isUserUrl ? (
                 <Button
                     onClick={handleLogout}
-                    className="mt-10 z-50 mr-10 cursor-pointer"
+                    className="mt-3 sm:mr-10  z-50 mr-3 sm:mt-10"
                     variant="link"
                 >
                     Logout
                 </Button>
             ) : (
-                <Link className="mt-10 z-50 mr-10" href={"/signin"}>
+                <Link
+                    className="mt-3 sm:mr-10  z-50 mr-3 sm:mt-10"
+                    href={"/signin"}
+                >
                     <Button variant="link">Login</Button>
                 </Link>
             )}
