@@ -78,6 +78,7 @@
 @media (max-width: 768px) {
     .mobile-button {
         font-size: 10px;
-        padding: 12px;
+       height: 28px;
+        padding: 10px;
     }
 }
