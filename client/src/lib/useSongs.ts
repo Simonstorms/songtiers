@@ -25,7 +25,11 @@ export const useSongs = (
 ): UseSongReturn => {
     const [song, setSong] = useState<SongData | null>(null);
 
-    useEffect(() => {}, [song]);
+    useEffect(() => {
+        (async () => {
+            if (token) await fetchSongs();
+        })();
+    }, []);
 
     if (!token) {
         return {
@@ -62,12 +66,6 @@ export const useSongs = (
             await fetchSongs();
         }
     };
-
-    useEffect(() => {
-        (async () => {
-            await fetchSongs();
-        })();
-    }, []);
 
     return {
         error: false,
