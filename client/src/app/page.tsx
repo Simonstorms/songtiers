@@ -6,6 +6,7 @@ export default function Home() {
     return (
         <BackgroundGradientAnimation>
             <Navbar headline={"Test"} />
+            <Footer />
         </BackgroundGradientAnimation>
     );
 }
