@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 import { FetchUser } from "@/app/FetchUser";
 
 export const metadata: Metadata = {
-    title: "Songtier - Create your Song Ranking",
+    title: "Songtiers - Create your Song Ranking",
     description: "by Simon Gneuss",
 };
 
