@@ -19,7 +19,6 @@ interface JwtPayload {
     firstname: string;
 }
 function hashPassword(password: string): string {
-    console.log('test')
     return bcrypt.hashSync(password, 9);
 
 }
@@ -27,7 +26,6 @@ function hashPassword(password: string): string {
 class AuthController {
     static signup = async (req: Request, res: Response) => {
         const data: FormData = req.body;
-        console.log(data);
         // Check if the username or email already exists in the database
         const existingUser = await datasource.getRepository(User)
             .createQueryBuilder("user")

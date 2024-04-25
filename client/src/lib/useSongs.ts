@@ -137,7 +137,6 @@ const saveSong = async (token: string, song: Track, position: number) => {
         } else {
             // Process the successful response, e.g., parse JSON, log a message, update UI
             const result: AddSongResponse = await response.json();
-            console.log("Song saved successfully:", result);
             return [null, result] as const;
         }
     } catch (err) {
