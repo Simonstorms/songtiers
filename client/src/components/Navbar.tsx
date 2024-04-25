@@ -48,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ headline }) => {
             {isUserUrl ? (
                 <Button
                     onClick={handleLogout}
-                    className="mt-3 sm:mr-10  z-50 mr-3 sm:mt-10"
+                    className="mt-3 sm:mr-12  z-50 mr-3 sm:mt-10"
                     variant="link"
                 >
                     Logout
