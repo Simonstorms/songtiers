@@ -3,13 +3,13 @@
 import Link from "next/link";
 
 import { motion } from "framer-motion";
-import { CloseIcon } from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
 import Navbar from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
     return (
         <>
-            <Navbar headline={"Datenschutzerklärung"} />
+            <Navbar headline={"Private Policy"} />
             <main className="max-w-6xl mt-20 mx-auto  ">
                 <div className="px-8  ">
                     <motion.div
@@ -24,9 +24,9 @@ export default function Home() {
                             className="flex items-center py-10 justify-center"
                             href="/"
                         >
-                            <div className="border  p-2 dark:border-white border-black rounded-full ">
-                                <CloseIcon />
-                            </div>
+                            <Button size={"lg"} variant={"outline"}>
+                                Back
+                            </Button>
                         </Link>
                     </motion.div>
 
