@@ -27,8 +27,8 @@ This guide outlines the necessary steps to set up a development environment for 
 2. Clone the project repository by running the following commands:
 
    ```bash
-   git clone <repository-url>
-   cd <repository-name>
+   git clone https://github.com/Simonstorms/songtiers
+   cd songtiers
    ```
 
    Replace `<repository-url>` with the actual URL of the project's Git repository, and `<repository-name>` with the name of the directory that Git clones into.
@@ -41,7 +41,7 @@ This guide outlines the necessary steps to set up a development environment for 
    cd client
    ```
 
-2. **Obtaining Spotify API Keys:**
+2. Obtaining Spotify API Keys:
    - Visit the [Spotify for Developers](https://developer.spotify.com/) portal and log in or create an account.
    - Once logged in, create a new project in the Dashboard.
    - After creating your project, you will be able to access your `Client ID` and `Client Secret`.
@@ -123,7 +123,7 @@ This guide outlines the necessary steps to set up a development environment for 
 ## Setting Up the PostgreSQL Database with Docker Compose
 
 1. Ensure Docker is installed and running on your machine.
-2. Navigate to the project's root directory where the `docker-compose.yml` file is located.
+2. Navigate to the project's server directory where the `docker-compose.yml` file is located.
 3. Start the PostgreSQL service using Docker Compose:
 
    ```bash
