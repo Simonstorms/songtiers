@@ -1,10 +1,9 @@
 "use client";
 import { ReactNode, useEffect } from "react";
-import { headers } from "next/headers";
 import { useRouter } from "next/navigation";
 
-export const WithUserProvider = (Compenent: () => ReactNode) => {
-    return (props: any) => {
+export const WithUserProvider = (Component: () => ReactNode) => {
+    return function Provider(props: any) {
         const router = useRouter();
         useEffect(() => {
             let jwt =
@@ -18,6 +17,6 @@ export const WithUserProvider = (Compenent: () => ReactNode) => {
             }
         }, []);
         //logic
-        return <Compenent {...props} />;
+        return <Component {...props} />;
     };
 };
