@@ -37,8 +37,8 @@ export default function Home() {
                             Yup, that's me.
                         </h2>
                         <h3 className="sm:text-xl   py-5">
-                            ou're probably wondering how I ended up in this
-                            situation
+                            You&apos;re probably wondering how I ended up in
+                            this situation
                         </h3>
                         <p className={"leading-[70px]"}>Check it out</p>
                         <ArrowDown size={50} />
