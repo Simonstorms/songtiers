@@ -2,8 +2,60 @@ import { CornerDownLeft, CornerDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+type UserResponse = {
+    userId: string;
+};
+
+const fetchUser = async (token: string) => {
+    try {
+        const res = await fetch(`${apiUrl}/auth/getuser`, {
+            method: "POST",
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        });
+
+        const { userId }: UserResponse = await res.json();
+        if (!userId) {
+            return [new Error("something wrong with response"), null] as const;
+        }
+        return [null, userId] as const;
+    } catch (err) {
+        const error = err as Error;
+        return [error, null] as const;
+    }
+};
 
 const Main = () => {
+    const [userId, setUserId] = useState<string | null>(null);
+
+    useEffect(() => {
+        (async () => {
+            let jwt =
+                typeof window !== "undefined"
+                    ? localStorage.getItem("token")
+                    : null;
+
+            if (!jwt) {
+                setUserId(null);
+                return;
+            }
+
+            const [err, userId] = await fetchUser(jwt);
+
+            if (err) {
+                setUserId(null);
+                return;
+            }
+
+            setUserId(userId);
+        })();
+    }, []);
+
     return (
         <div className=" z-50 absolute p-5 sm:p-14 bg-white-300 mt-14 rounded-md   sm:border-2 dark:border-gray-100 border-gray-900">
             <h1 className="text-2xl sm:text-4xl  font-extrabold">
@@ -45,7 +97,7 @@ const Main = () => {
                 </div>
             </div>
             <div className="flex justify-center items-center pt-2">
-                <Link href={"/user/userId"}>
+                <Link href={`${userId ? "/user/" + userId : "/signin"}`}>
                     <Button size={"lg"}>Try it out!</Button>
                 </Link>
             </div>

@@ -1,11 +1,7 @@
 "use client";
-import { FC, useCallback } from "react";
-
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
-
-import { toPng } from "html-to-image";
 const SongField = dynamic(() => import("@/components/SongField"), {
     ssr: false,
 });
@@ -13,8 +9,9 @@ const SongField = dynamic(() => import("@/components/SongField"), {
 import { Button } from "@/components/ui/button";
 import ScreenshotButton from "@/components/Screenshot";
 import Footer from "@/components/Footer";
+import { WithUserProvider } from "@/components/authentification/WithUserProvider";
 
-const Page: FC = () => {
+const Page = () => {
     return (
         <BackgroundGradientAnimation>
             <Navbar headline={"Select your Top 5"} />
@@ -33,4 +30,4 @@ const Page: FC = () => {
     );
 };
 
-export default Page;
+export default WithUserProvider(Page);

@@ -3,8 +3,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ReactNode } from "react";
 
-import { FetchUser } from "@/app/FetchUser";
-
 export const metadata: Metadata = {
     title: "Songtiers - Create your Song Ranking",
     description: "by Simon Gneuss",
@@ -23,7 +21,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <FetchUser>{children}</FetchUser>
+                        {children}
                     </ThemeProvider>
                 </body>
             </html>
