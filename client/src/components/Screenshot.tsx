@@ -12,15 +12,26 @@ const ScreenshotButton = () => {
                     const ctx = canvas.getContext("2d");
 
                     if (ctx) {
-                        const cropWidth = img.width * 0.8;
-                        const cropHeight = img.height * 0.7;
+                        let cropWidth = img.width * 0.8;
+                        let cropHeight = img.height * 0.7;
+                        let offsetX = img.width * 0.1;
+                        let offsetY = img.height * 0.15;
+
+                        // Check if screen width is less than or equal to 768px
+                        if (window.innerWidth <= 768) {
+                            cropWidth = img.width;
+                            cropHeight = img.height * 0.8;
+                            offsetX = 0;
+                            offsetY = img.height * 0.1;
+                        }
+
                         canvas.width = cropWidth;
                         canvas.height = cropHeight;
 
                         ctx.drawImage(
                             img,
-                            img.width * 0.1,
-                            img.height * 0.15,
+                            offsetX,
+                            offsetY,
                             cropWidth,
                             cropHeight,
                             0,
