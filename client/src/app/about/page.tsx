@@ -34,7 +34,7 @@ export default function Home() {
 
                     <div className="flex flex-col items-center justify-center">
                         <h2 className="text-4xl font-bold leading-[70px]">
-                            Yup, that's me.
+                            Yup, that&apos;s me.
                         </h2>
                         <h3 className="sm:text-xl   py-5">
                             You&apos;re probably wondering how I ended up in
