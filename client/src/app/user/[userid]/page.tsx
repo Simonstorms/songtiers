@@ -12,6 +12,7 @@ const SongField = dynamic(() => import("@/components/SongField"), {
 
 import { Button } from "@/components/ui/button";
 import ScreenshotButton from "@/components/Screenshot";
+import Footer from "@/components/Footer";
 
 const Page: FC = () => {
     return (
@@ -19,7 +20,7 @@ const Page: FC = () => {
             <Navbar headline={"Select your Top 5"} />
             <div
                 id="user-page"
-                className="flex z-50 absolute flex-col items-center  gap-5 sm:gap-7 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                className="flex z-50 sm:absolute flex-col items-center justify-center align-middle gap-5 sm:gap-7 top-1/2 left-1/2 my-10 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2"
             >
                 {" "}
                 {[1, 2, 3, 4, 5].map((position) => (
@@ -27,6 +28,7 @@ const Page: FC = () => {
                 ))}
                 <ScreenshotButton />
             </div>
+            <Footer />
         </BackgroundGradientAnimation>
     );
 };

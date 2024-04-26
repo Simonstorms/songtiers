@@ -45,7 +45,6 @@ export const FetchUser = ({ children }: FetchUserProps) => {
 
                 const user = await res.json();
                 // Redirect based on the user's status
-                console.log(user.userId);
                 if (user.userId) {
                     router.push(`/user/${user.userId}`);
                     // Save user in local storage
@@ -57,7 +56,6 @@ export const FetchUser = ({ children }: FetchUserProps) => {
                 router.push("/signin");
             }
         })();
-    }, [router]); // Include dependencies in the useEffect hook
-
+    }, []);
     return <>{children}</>;
 };

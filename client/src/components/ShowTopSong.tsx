@@ -19,12 +19,12 @@ const ShowTopSong: FC<ShowTopsSongProps> = ({ song }) => {
                 <p>
                     {window.innerWidth <= 768 && song.name.length > 22
                         ? `${song.name.substring(0, 22)}...`
-                        : song.name}
+                        : `${song.name.substring(0, 40)}`}
                 </p>
                 <p>
                     {window.innerWidth <= 768 && song.artist.length > 17
                         ? `by: ${song.artist.substring(0, 17)}...`
-                        : `by: ${song.artist}`}
+                        : `by: ${song.artist.substring(0, 40)}`}
                 </p>
             </div>
         </div>

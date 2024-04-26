@@ -10,7 +10,7 @@ export default function Home() {
     return (
         <>
             <Navbar headline={"Datenschutzerklärung"} />
-            <main className="max-w-6xl mt-20 mx-auto p-10 ">
+            <main className="max-w-6xl mt-20 mx-auto  ">
                 <div className="px-8  ">
                     <motion.div
                         whileHover={{ scale: 1.1 }}

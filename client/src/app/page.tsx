@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
     return (
         <BackgroundGradientAnimation>
-            <Navbar headline={"Test"} />
+            <Navbar headline={"Songtiers"} />
             <Footer />
         </BackgroundGradientAnimation>
     );

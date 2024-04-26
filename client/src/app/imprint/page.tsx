@@ -9,7 +9,7 @@ export default function Home() {
     return (
         <>
             <Navbar headline={"Imprint"} />
-            <main className="max-w-6xl mx-auto m-32 text-center">
+            <main className="max-w-6xl mx-auto m-20 text-center">
                 <div className="px-8 w-full">
                     <motion.div
                         whileHover={{ scale: 1.1 }}
