@@ -29,7 +29,7 @@ const SongField: FC<SongFieldProps> = ({ position }) => {
     if (error) return null;
 
     return (
-        <div className="flex  rounded-xl border-2 w-[360px] sm:w-[650px] dark:border-[#FAFAFA] border-gray-700 h-20 sm:h-24">
+        <div className="flex  rounded-xl border-2 w-[360px] sm:w-[650px] dark:border-[#FAFAFA] border-gray-700 h-16 sm:h-20">
             <div className="flex text-2xl rounded-l-[10px] font-bold w-24 bg-black dark:bg-white bg-opacity-10 dark:bg-opacity-20 items-center justify-center ">
                 {position + "."}
             </div>

@@ -31,17 +31,15 @@ const Navbar: React.FC<NavbarProps> = ({ headline }) => {
     };
 
     return (
-        <div className="flex justify-between">
-            <div>
-                <Button
-                    variant="outline"
-                    className="rounded-full z-50 mr-3 mt-3 ml-3 sm:mt-10 sm:ml-10"
-                    size="icon"
-                    onClick={toggleTheme}
-                >
-                    {isDark ? <SunMediumIcon /> : <MoonIcon />}
-                </Button>
-            </div>
+        <div className="flex z-50  justify-between">
+            <Button
+                variant="outline"
+                className="rounded-full z-50 mr-3 mt-3 ml-3 sm:mt-10 sm:ml-10"
+                size="icon"
+                onClick={toggleTheme}
+            >
+                {isDark ? <SunMediumIcon /> : <MoonIcon />}
+            </Button>
             <h1 className="font-bold z-50 mt-7 sm:mt-12 text-xl sm:text-4xl">
                 {headline}
             </h1>

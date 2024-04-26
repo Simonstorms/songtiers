@@ -43,7 +43,11 @@ const ScreenshotButton = () => {
             });
     }, []);
 
-    return <Button onClick={takeScreenshot}>Take Screenshot</Button>;
+    return (
+        <Button variant="outline" onClick={takeScreenshot}>
+            Take Screenshot
+        </Button>
+    );
 };
 
 export default ScreenshotButton;

@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 export default function Footer() {
     return (
         <>
-            <footer className="sm:fixed sm:inset-x-0 z-50 sm:bottom-0 items-center  ">
+            <footer className=" absolute sm:inset-x-0 z-50 bottom-0 items-center  ">
                 <Separator orientation={"horizontal"} />
                 <div className="flex flex-col sm:flex-row p-8 justify-between ">
                     <div className="flex space-x-6">
