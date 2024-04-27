@@ -6,7 +6,6 @@ const SongField = dynamic(() => import("@/components/SongField"), {
     ssr: false,
 });
 
-import { Button } from "@/components/ui/button";
 import ScreenshotButton from "@/components/Screenshot";
 import Footer from "@/components/Footer";
 import { WithUserProvider } from "@/components/authentification/WithUserProvider";

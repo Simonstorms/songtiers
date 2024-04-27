@@ -1,9 +1,11 @@
+"use client";
 import { SigninForm } from "@/components/authentification/signin_form";
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
+import { WithSigninProvider } from "@/components/authentification/WithSigninProvider";
 
-export default function Home() {
+const Page = () => {
     return (
         <>
             <Navbar headline={"Signin"} />
@@ -15,4 +17,6 @@ export default function Home() {
             </div>
         </>
     );
-}
+};
+
+export default WithSigninProvider(Page);
