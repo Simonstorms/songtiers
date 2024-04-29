@@ -31,7 +31,6 @@ This guide outlines the necessary steps to set up a development environment for 
    cd songtiers
    ```
 
-   Replace `<repository-url>` with the actual URL of the project's Git repository, and `<repository-name>` with the name of the directory that Git clones into.
 
 ## Setting Up the Next.js Client
 
