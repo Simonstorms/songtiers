@@ -25,6 +25,16 @@ export const useSongs = (
 ): UseSongReturn => {
     const [song, setSong] = useState<SongData | null>(null);
 
+    const fetchSongs = async () => {
+        if (!token) return;
+        const [err, fetchedSong] = await fetchSongsFromApi(token, position);
+        if (err) {
+            setSong(null);
+        } else {
+            setSong(fetchedSong);
+        }
+    };
+
     useEffect(() => {
         (async () => {
             if (token) await fetchSongs();
@@ -41,14 +51,6 @@ export const useSongs = (
         };
     }
 
-    const fetchSongs = async () => {
-        const [err, fetchedSong] = await fetchSongsFromApi(token, position);
-        if (err) {
-            setSong(null);
-        } else {
-            setSong(fetchedSong);
-        }
-    };
     const addSong = async (songInput: Track) => {
         const [err, res] = await saveSong(token, songInput, position);
         if (err) {

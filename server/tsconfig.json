@@ -13,10 +13,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "baseUrl": ".",
+    "moduleResolution": "bundler",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["./src/*"]
     },
     "types": ["node", "jest"]
   },
